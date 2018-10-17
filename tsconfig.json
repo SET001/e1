@@ -3,10 +3,14 @@
 		"module": "commonjs",
 		"target": "es5",
 		"moduleResolution": "node",
+		"types": ["reflect-metadata", "mocha"],
 		"noImplicitAny": true,
-		"removeComments": true,
-		"preserveConstEnums": true,
-		"sourceMap": true,
-		"jsx": "react"
+		"jsx": "react",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"lib": [
+			"es6",
+			"es2016",
+      "dom"]
 	}
 }
