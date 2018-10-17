@@ -16,15 +16,15 @@ class Hud extends React.Component<IHUDProps>{
 		return <div id="hud">
 			<dl>
 				<dt>Gold</dt>
-				<dd>{this.props.game.gold}</dd>
-				<dt>Workers</dt>
-				<dd>{this.props.game.workers}</dd>
+				{/* <dd>{~~this.props.gold}</dd>
+				<dt>Workers</dt> */}
+				{/* <dd>{this.props.game.workers}</dd>
 				<dt>WorkerIncome</dt>
 				<dd>{this.props.game.workersIncome}</dd>
 				<dt>Player position x</dt>
 				{/* <dd>{this.props.player.position.x}</dd>  */}
-				<dt>controller up</dt>
-				<dd>{this.props.controller.up.toString()}</dd>
+				{/* <dt>controller up</dt>
+				<dd>{this.props.controller.up.toString()}</dd> */}
 			</dl>
 		</div>
 	}

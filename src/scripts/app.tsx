@@ -3,7 +3,6 @@ import * as PIXI from 'pixi.js';
 import 'pixi-tilemap';
 
 import Hud from './hud'
-import { promises } from "fs";
 interface IHUDProps{
 	game: {
 		gold: Number
@@ -14,7 +13,7 @@ export class App extends React.Component{
 		const loader = PIXI.loader
 			.add(['imgs/imgTanks.png'])
 			.add('atlas', 'basic/atlas.json');
-		const resources = await new Promise((resolve, reject)=>loader.load((loader, resources:any[]) => resolve(resources)))
+		const resources: any = await new Promise((resolve, reject)=>loader.load((loader: PIXI.loaders.Loader, resources:PIXI.loaders.Resource[]) => resolve(resources)))
 						
 		const resolutionX: number = window.innerWidth;
 		const resolutionY: number = window.innerHeight;
@@ -41,7 +40,8 @@ export class App extends React.Component{
 		// loader
 		// loader.load(function(loader, resources:any[]) {
 		// 	console.log("!!!", resources)
-		var tilemap = new PIXI.tilemap.CompositeRectTileLayer(0, [resources['atlas_image'].texture]);
+		const atlas = resources['atlas_image'];
+		var tilemap = new PIXI.tilemap.CompositeRectTileLayer(0, [atlas.texture]);
 		console.log("@@@", playerOffsetX, player.x, playerOffsetY, player.y)
 		const tileSize = 32
 		const tileMapSize = {
