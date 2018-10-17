@@ -3,20 +3,19 @@ export class Action{
   constructor(public name: string, public keys: string[]){}
 }
 
-
-export class KeyboardController{
-	constructor(public store: any, public actions: Action[]){
+export class KeyboardInput{
+	constructor(public actions: Action[]){
 
 	}
 
-	init(){
+	init(store: any){
 		document.addEventListener('keydown', (event) => {
 			const actions = this.actions.filter((action: Action)=>action.keys.includes(event.code))
 			const states = actions.reduce((acc:any, action)=>{
 				acc[action.name] = true
 				return acc
 			} ,{})
-			this.store.dispatch({type: 'controllerAction', states})
+			store.dispatch({type: 'controllerAction', states})
 		});
 		document.addEventListener('keyup', (event) => {
 			const actions = this.actions.filter((action: Action)=>action.keys.includes(event.code))
@@ -24,7 +23,20 @@ export class KeyboardController{
 				acc[action.name] = false
 				return acc
 			} ,{})
-			this.store.dispatch({type: 'controllerAction', states})
+			store.dispatch({type: 'controllerAction', states})
 		});
+	}
+	
+	reducer(action:any, state: any){
+		switch (action.type){
+			case 'controllerAction':
+				const newState = {
+					...state,
+					...(action.states)
+				}
+				return newState
+			default:
+				return state
+		}
 	}
 }
