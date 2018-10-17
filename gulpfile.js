@@ -9,20 +9,37 @@ const sass = require('gulp-sass')
 
 const errorHandler = error => console.error(error.toString())
 
-gulp.task('compile:scripts', ()=> 
+gulp.task('compile:scripts', ()=>	gulp
+	.src(getWatchPath(config.ts))
+	.pipe(tsProject())
+	.on('error', errorHandler)
+	.pipe(gulp.dest('dist/src'))
+	// browserify({
+	// 	entries: `${config.ts.source}/${config.ts.entry}`,
+	// 	debug: true,
+	// })
+	// .plugin(tsify)
+	// .bundle()
+	// .on('error', errorHandler)
+	// .pipe(source('index.js'))
+  // .pipe(gulp.dest(config.ts.output))
+)
+
+gulp.task('bundle', ()=>
 	browserify({
-		entries: `${config.ts.source}/${config.ts.entry}`,
-		debug: true,
+		entries: 'dist/src/index.js'
 	})
-	.plugin(tsify)
 	.bundle()
 	.on('error', errorHandler)
 	.pipe(source('index.js'))
-  .pipe(gulp.dest(config.ts.output))
+	.pipe(gulp.dest('dist/bin'))
 )
 
-gulp.task('compile:scripts:watch', ()=>
-	gulp.watch(getWatchPath(config.ts), ['compile:scripts'])
+
+gulp.task('build:scripts', ['compile:scripts', 'bundle'])
+
+gulp.task('build:scripts:watch', ()=>
+	gulp.watch(getWatchPath(config.ts), ['build:scripts'])
 )
 
 
@@ -36,4 +53,4 @@ gulp.task('compile:styles:watch', ()=>
 	gulp.watch([`${config.sass.source}/**/${config.sass.watch}`], ['compile:styles'])
 )
 
-gulp.task('watch', ['compile:scripts:watch', 'compile:styles:watch'])
+gulp.task('watch', ['build:scripts:watch', 'compile:styles:watch'])
