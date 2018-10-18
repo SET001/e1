@@ -1,9 +1,6 @@
-import {systemsReducer, System} from '../core/system'
-import { createStore, combineReducers } from 'redux';
-import * as reduceReducers from 'reduce-reducers';
-import {map, filter, reduce} from 'ramda'
-import { Action } from '../core/action';
-import {assert} from 'chai'
+import { System } from '../core/system'
+import { assert } from 'chai'
+import { Game } from '../core/game';
 
 //	states
 class Building{
@@ -95,46 +92,19 @@ describe('core', ()=>{
 				gold: 0
 			}
 		}
-		const buildingsSystem = new BuildingsSystem()
-		const tickIncomeSystem = new TickIncomeSystem()
-		const tickOutcomeSystem = new TickOutcomeSystem()
-
-		const systems = [
-			tickIncomeSystem,
-			tickOutcomeSystem,
-			buildingsSystem
-		]
 		
-		const rootStateSystems = filter((s: System<any>)=>typeof s.stateSliceName ==='undefined')(systems)
-		const sliceStateSystems = filter((s:System<any>)=>typeof s.stateSliceName !=='undefined')(systems)
-
-		const sliceStateReducers = reduce((acc: {[key: string]: any}, system: System<any>)=>{
-			acc[system.stateSliceName] = (state = rootState[system.stateSliceName], action: Action) =>
-				system.reducer.call(system, state, action)
-			return acc
-		}, {})(sliceStateSystems)
-
-		reduce((acc: {[key: string]: any}, stateKey: string)=>{
-			if(acc[stateKey] === undefined){
-				acc[stateKey] = (state:any)=>state || rootState[stateKey]
-			}
-			return acc;
-		}, sliceStateReducers)(Object.keys(rootState))
-		
-		// @ts-ignore
-		const reducer = reduceReducers.apply(reduceReducers, [
-			combineReducers(sliceStateReducers),
-			...map(s=>s.reducer.bind(s), rootStateSystems),
+		const game = new Game(rootState, [
+			new BuildingsSystem(),
+			new TickIncomeSystem(),
+			new TickOutcomeSystem(),
 		])
+		
+		game.store.dispatch(addBuilding(new Building(100, 10, 1, 'asd')))
+		game.store.dispatch(tickAction)
+		game.store.dispatch(tickAction)
+		game.store.dispatch(tickAction)
 
-		const store = createStore(reducer, rootState)
-
-		store.dispatch(addBuilding(new Building(100, 10, 1, 'asd')))
-		store.dispatch(tickAction)
-		store.dispatch(tickAction)
-		store.dispatch(tickAction)
-
-		const finalState = store.getState()
+		const finalState = game.store.getState()
 		assert.equal(finalState.buildings.length, 2)
 		assert.equal(finalState.resources.gold, 54)
 	})

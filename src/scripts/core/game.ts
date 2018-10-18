@@ -1,17 +1,40 @@
-import { createStore, applyMiddleware} from 'redux'
+import { createStore, combineReducers, Store} from 'redux'
 import { injectable, inject } from "inversify";
 import "reflect-metadata";
-import {compose, map, reverse} from 'ramda'
-import {defaultState} from '../defaultState'
+import {map, filter, reduce} from 'ramda'
+import * as reduceReducers from 'reduce-reducers';
+import { Action } from '../core/action';
 import {System} from './system'
 
 @injectable()
 export class Game{
-	store: any
+	store: Store
 	constructor(
+		public rootState: any,
 		@inject("SystemsList") public systems: System<any>[]
 	){
-		// this.store = createStore(reducer)
+		const rootStateSystems = filter((s: System<any>)=>typeof s.stateSliceName ==='undefined')(systems)
+		const sliceStateSystems = filter((s:System<any>)=>typeof s.stateSliceName !=='undefined')(systems)
+		const sliceStateReducers = reduce((acc: {[key: string]: any}, system: System<any>)=>{
+			acc[system.stateSliceName] = (state = rootState[system.stateSliceName], action: Action) =>
+				system.reducer.call(system, state, action)
+			return acc
+		}, {})(sliceStateSystems)
+
+		reduce((acc: {[key: string]: any}, stateKey: string)=>{
+			if(acc[stateKey] === undefined){
+				acc[stateKey] = (state:any)=>state || rootState[stateKey]
+			}
+			return acc;
+		}, sliceStateReducers)(Object.keys(rootState))
+		
+		// @ts-ignore
+		const reducer = reduceReducers.apply(reduceReducers, [
+			combineReducers(sliceStateReducers),
+			...map(s=>s.reducer.bind(s), rootStateSystems),
+		])
+
+		this.store = createStore(reducer, rootState)
 	}
 
 	run(){
