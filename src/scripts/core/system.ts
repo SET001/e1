@@ -1,13 +1,28 @@
 import { Store, Reducer } from 'redux'
+import { compose, juxt, join, toLower, head, tail} from 'ramda'
+import {Action} from './action'
 
-export class System{
+const firsToLower:Function = compose(
+	join(''),
+	juxt([compose(toLower, head), tail])
+);
+
+export class System<T>{
+	[key: string]: any
+	stateSliceName?: string
+	
 	init(store: Store){}
+
+	reducer(state: T, action:Action){
+		if(action.type[0]!=='@'){
+			if (typeof this[action.type] === 'function'){
+				return this[action.type](state, action)
+			}
+		}
+		return state
+	}
 }
 
-
-// const splitReducers = systems => (state, action) =>
-// 	compose.apply(null, map(s=>s(action), reverse(systems)))(state)
-
-export function systemsReducer(systems:System[]):Reducer{
+export function systemsReducer(systems:System<any>[]):Reducer{
 	return state=>state
 }

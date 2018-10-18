@@ -9,7 +9,7 @@ import {System} from './system'
 export class Game{
 	store: any
 	constructor(
-		@inject("SystemsList") public systems: System[]
+		@inject("SystemsList") public systems: System<any>[]
 	){
 		// this.store = createStore(reducer)
 	}
