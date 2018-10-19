@@ -11,7 +11,7 @@ export class Game{
 	store: Store
 	constructor(
 		public rootState: any,
-		@inject("SystemsList") public systems: System<any>[]
+		public systems: System<any>[],
 	){
 		const rootStateSystems = filter((s: System<any>)=>typeof s.stateSliceName ==='undefined')(systems)
 		const sliceStateSystems = filter((s:System<any>)=>typeof s.stateSliceName !=='undefined')(systems)
