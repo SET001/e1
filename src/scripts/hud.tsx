@@ -1,23 +1,15 @@
 import * as React from "react";
 import {connect} from 'react-redux'
-import {bindActionCreators, Dispatch} from 'redux'
+import {RootState} from './state'
 
-interface IHUDProps{
-	game: {
-		dispatch: Dispatch<any>
-		gold: Number
-		workers: Number
-		workersIncome: Number
-	}
-}
 
-class Hud extends React.Component<IHUDProps>{
+class Hud extends React.Component<RootState>{
 	render(){
 		return <div id="hud">
 			<dl>
 				<dt>Gold</dt>
-				{/* <dd>{~~this.props.gold}</dd>
-				<dt>Workers</dt> */}
+				<dd>{~~this.props.resources.gold}</dd>
+				<dt>Workers</dt>
 				{/* <dd>{this.props.game.workers}</dd>
 				<dt>WorkerIncome</dt>
 				<dd>{this.props.game.workersIncome}</dd>
@@ -33,4 +25,4 @@ class Hud extends React.Component<IHUDProps>{
 function mapStateToProps(state:any) {
   return state;
 }
-export default connect<IHUDProps>(mapStateToProps)(Hud)
+export default connect<RootState>(mapStateToProps)(Hud)

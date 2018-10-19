@@ -36,10 +36,10 @@ gulp.task('bundle', ()=>
 )
 
 
-gulp.task('build:scripts', ['compile:scripts', 'bundle'])
+gulp.task('build:scripts', gulp.series('compile:scripts', 'bundle'))
 
 gulp.task('build:scripts:watch', ()=>
-	gulp.watch(getWatchPath(config.ts), ['build:scripts'])
+	gulp.watch(getWatchPath(config.ts), gulp.series('build:scripts'))
 )
 
 
@@ -50,7 +50,7 @@ gulp.task('compile:styles', ()=>
 )
 
 gulp.task('compile:styles:watch', ()=>
-	gulp.watch([`${config.sass.source}/**/${config.sass.watch}`], ['compile:styles'])
+	gulp.watch([`${config.sass.source}/**/${config.sass.watch}`], gulp.series('compile:styles'))
 )
 
-gulp.task('watch', ['build:scripts:watch', 'compile:styles:watch'])
+gulp.task('watch', gulp.series(['build:scripts:watch', 'compile:styles:watch']))

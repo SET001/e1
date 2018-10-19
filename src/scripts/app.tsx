@@ -11,8 +11,8 @@ interface IHUDProps{
 export class App extends React.Component{
 	async componentDidMount(){
 		const loader = PIXI.loader
-			.add(['imgs/imgTanks.png'])
-			.add('atlas', 'basic/atlas.json');
+			.add(['public/imgTanks.png'])
+			.add('atlas', 'public/atlas.json');
 		const resources: any = await new Promise((resolve, reject)=>loader.load((loader: PIXI.loaders.Loader, resources:PIXI.loaders.Resource[]) => resolve(resources)))
 						
 		const resolutionX: number = window.innerWidth;
@@ -106,9 +106,9 @@ export class App extends React.Component{
 			tilemap.pivot.set(player.x, player.y);
 			requestAnimationFrame(gameLoop);
 		}
-		console.log("%%%%", PIXI.utils.TextureCache['imgs/imgTanks.png'])
+		console.log("%%%%", PIXI.utils.TextureCache['public/imgTanks.png'])
 		const tankTexture = new PIXI.Texture(
-			PIXI.utils.TextureCache['imgs/imgTanks.png'],
+			PIXI.utils.TextureCache['public/imgTanks.png'],
 			new PIXI.Rectangle(0 * 48, 0, 48, 48)
 		);
 		const playerTankSprite = new PIXI.Sprite(tankTexture);
