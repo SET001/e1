@@ -1,7 +1,7 @@
 import {Building, GoldMine} from '../entities/building'
 import {assert} from 'chai'
 
-describe.only('Buildings', ()=>{
+describe('Buildings', ()=>{
 	it('should increase buildings counter for base class', ()=>{
 		new Building().init()
 		new Building().init()
