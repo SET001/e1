@@ -1,13 +1,8 @@
 import * as React from "react";
 import * as PIXI from 'pixi.js';
 import 'pixi-tilemap';
+import HudPanel from './hudPanel'
 
-import Hud from './stats'
-interface IHUDProps{
-	game: {
-		gold: Number
-	}
-}
 export class App extends React.Component{
 	async componentDidMount(){
 		const loader = PIXI.loader
@@ -130,7 +125,7 @@ export class App extends React.Component{
 	render(){
 		console.log("app props", this.props)
 		return <div id="app">
-			<Hud />
+			<HudPanel />
 		</div>
 	}
 }

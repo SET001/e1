@@ -5,7 +5,7 @@ import {RootState} from '../state'
 
 class Hud extends React.Component<RootState>{
 	render(){
-		return <div id="hud">
+		return <div className="hud" id="stats">
 			<dl>
 				<dt>Gold</dt>
 				<dd>{~~this.props.resources.gold}</dd>

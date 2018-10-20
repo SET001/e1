@@ -7,9 +7,10 @@ import { Game } from "./core/game";
 import {TickIncomeSystem, TickOutcomeSystem} from './systems'
 import {rootState} from './state'
 
+const tickIncomeModifier = 10000
 const game = new Game(rootState, [
-  new TickIncomeSystem(),
-	new TickOutcomeSystem(),
+  new TickIncomeSystem(tickIncomeModifier),
+	new TickOutcomeSystem(tickIncomeModifier),
 	// new KeyboardInput([
 	// 	new Action('left', ['KeyA', 'ArrowLeft', 'Numpad4']),
 	// 	new Action('right', ['KeyD', 'ArrowDown', 'Numpad6']),

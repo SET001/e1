@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon ./node_modules/mocha/bin/mocha dist/src/specs/**/*.js"
+    "test": "nodemon ./node_modules/mocha/bin/mocha dist/src/specs/**/*.js --watch dist/bin/index.js"
   },
   "keywords": [],
   "author": "",

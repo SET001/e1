@@ -1,16 +1,24 @@
-import {Building} from './entities'
+import {LaserTower, CannonTower, Building, GoldMine} from './entities'
+
 
 export interface RootState{
+	buildingsAvailable: Building[]
 	buildings: Building[],
 	resources: {
 		gold: number
 	}
 }
+const lt = new LaserTower()
+lt.init()
+const ct  =new CannonTower()
+ct.init()
+const gm = new GoldMine()
+gm.init()
 export const rootState: RootState =  {
-	buildings: [
-		new Building(100, 0.01, 0.001, 'asd')
-	],
+	buildingsAvailable: [lt, ct],
+	buildings: [gm],
 	resources: {
-		gold: 0
+		gold: 97
 	}
 }
+console.log("rootState", lt, ct, gm)
