@@ -2,7 +2,7 @@ import * as React from "react";
 import * as PIXI from 'pixi.js';
 import 'pixi-tilemap';
 
-import Hud from './hud'
+import Hud from './stats'
 interface IHUDProps{
 	game: {
 		gold: Number
