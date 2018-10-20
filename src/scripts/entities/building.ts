@@ -1,7 +1,3 @@
-interface BuildingConstructor{
-	cBuildings: number
-}
-
 export class Building{
 	static cBuildings: {[key:string]:number} = {}
 	cost: number = 0

@@ -36,6 +36,10 @@ export class Game{
 
 		this.store = createStore(reducer, rootState)
 	}
+	
+	init(){
+		map((s: System<any>)=>s.init(this.store), this.systems)
+	}
 
 	run(){
 		this.gameLoop()
