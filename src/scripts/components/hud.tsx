@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from 'react-redux'
-import {RootState} from './state'
+import {RootState} from '../state'
 
 
 class Hud extends React.Component<RootState>{
