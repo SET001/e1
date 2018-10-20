@@ -32,6 +32,6 @@ export class TileMapSystem extends System<any>{
 		
 		var textures = resources.atlas.textures;
 		tilemap.addFrame(textures["chest.png"], 0*tileSize, 2*tileSize);
-		store.dispatch({type: 'addRenderObject', payload: tilemap})
+		store.dispatch({type: 'addRenderObject', payload: tilemap, layer: 'tilemap'})
 	}
 }

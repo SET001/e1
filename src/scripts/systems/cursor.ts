@@ -10,9 +10,8 @@ export class CursorSystem extends System<any>{
 		this.sprite = PIXI.Sprite.fromImage('public/chess_tower.png');	
 		this.sprite.position.set(100, 100)
 		this.sprite.visible = false
-		setTimeout(()=>{
-			store.dispatch({type: 'addRenderObject', payload: this.sprite})
-		}, 1000)
+		this.sprite.alpha = 0.7
+		store.dispatch({type: 'addRenderObject', payload: this.sprite, layer: 'cursor'})
 	}
 
 	mouseMove(state: RootState, action: Action){
