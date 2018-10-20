@@ -53,4 +53,4 @@ gulp.task('compile:styles:watch', ()=>
 	gulp.watch([`${config.sass.source}/**/${config.sass.watch}`], gulp.series('compile:styles'))
 )
 
-gulp.task('watch', gulp.series(['build:scripts:watch', 'compile:styles:watch']))
+gulp.task('watch', gulp.parallel(['build:scripts:watch', 'compile:styles:watch']))
