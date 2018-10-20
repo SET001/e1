@@ -1,7 +1,9 @@
 interface BuildingConstructor{
 	cBuildings: number
 }
+
 export class Building{
+	static cBuildings: {[key:string]:number} = {}
 	cost: number = 0
 	income: number = 0
 	outcome: number = 0
@@ -9,18 +11,18 @@ export class Building{
 	name: string
 	type: string = 'Building'
 	
-	"constructor": BuildingConstructor
-	
 	constructor(){
-		this.constructor.cBuildings = this.constructor.cBuildings
-			? this.constructor.cBuildings
-			: 0
+		if (Building.cBuildings[this.constructor.name] === undefined){
+			Building.cBuildings[this.constructor.name] = 0
+		} else Building.cBuildings[this.constructor.name] = Building.cBuildings[this.constructor.name] + 1
 	}
 
 	init(){
-		this.name = `${this.baseName} ${++this.constructor.cBuildings}`		
+		this.name = `${this.baseName} ${Building.cBuildings[this.constructor.name]}`		
+		return this
 	}
 }
+// Building.prototype.cBuildings = {}
 
 export class LaserTower extends Building{
 	cost = 500
