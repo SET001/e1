@@ -24,7 +24,7 @@ export const rootState: RootState =  {
 	buildingsAvailable: [lt, ct],
 	buildings: [gm],
 	resources: {
-		gold: 197
+		gold: 10197
 	}
 }
 console.log("rootState", lt, ct, gm)

@@ -3,11 +3,12 @@ import {connect} from 'react-redux'
 import {RootState} from '../state'
 import BuildingAvailable from './buildingAvailable'
 import { Building } from "../entities";
+import { startBuilding } from '../actions'
 
 class Buildings extends React.Component<RootState>{
 	onClick(building: Building){
-		console.log("trying to build building", building)
-		this.props.dispatch({type: 'cursorEnabled'})
+		const {constructor} = building as any
+		this.props.dispatch(startBuilding(new constructor().init()))
 	}
 	render(){
 		return <div className="hud" id="buildingsAvailable">

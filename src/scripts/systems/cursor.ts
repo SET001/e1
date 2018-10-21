@@ -20,6 +20,10 @@ export class CursorSystem extends System<any>{
 				Math.ceil(action.payload.x/32-1)*32,
 				Math.ceil(action.payload.y/32-1)*32
 			)
+			state.buildingCursor.building.sprite.position.set(
+				Math.ceil(action.payload.x/32-1)*32,
+				Math.ceil(action.payload.y/32-1)*32
+			)
 		}
 		return state
 	}
@@ -42,22 +46,34 @@ export class CursorSystem extends System<any>{
 		return state
 	}
 
-	cursorEnabled(state: RootState){
+	startBuilding(state: RootState, action:Action){
 		this.sprite.visible = true
 		return {
 			...state,
 			buildingCursor: {
+				...state.buildingCursor,
+				building: action.payload,
+				enabled: this.sprite.visible
+			}
+		}
+	}
+
+	cancelBuilding(state: RootState){
+		this.sprite.visible = false
+		return {
+			...state,
+			buildingCursor: {	//	TODO: remove building from cursor
 				...state.buildingCursor,
 				enabled: this.sprite.visible
 			}
 		}
 	}
 
-	cursorDisabled(state: RootState){
+	successBuilding(state: RootState){
 		this.sprite.visible = false
 		return {
 			...state,
-			buildingCursor: {
+			buildingCursor: {	//	TODO: remove building from cursor
 				...state.buildingCursor,
 				enabled: this.sprite.visible
 			}

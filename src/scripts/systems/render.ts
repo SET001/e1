@@ -3,15 +3,30 @@ import { System } from '../core/system'
 import { Action } from '../core/action'
 import { Store } from 'redux'
 import { RootState } from '../state'
+import { Building } from '../entities';
+import { successBuilding } from '../actions'
 
-interface Layers {
+export interface RenderLayers {
 	cursor: PIXI.Container
 	buildings: PIXI.Container
 	tilemap: PIXI.Container
 }
+
+
+
+
+// const buyBuildingAction = (building: Building) => (dispatch: Function)  => 
+// 	Promise.all([
+// 		dispatch(udpateResources(building.cost)),
+// 		dispatch(addBuilding(building)),
+// 	]).then(()=>addRenderObject())
+	//	decrease money
+	//	add new building
+	//	add new render object
+
 export class RenderSystem extends System<any>{
 	app: PIXI.Application
-	layers: Layers & {[keys:string]: PIXI.Container}
+	layers: RenderLayers & {[keys:string]: PIXI.Container}
 	init(store: Store){
 		const resolutionX: number = window.innerWidth;
 		const resolutionY: number = window.innerHeight;
@@ -28,7 +43,11 @@ export class RenderSystem extends System<any>{
 
 		document.getElementById("app").appendChild(this.app.view);
 		this.app.view.addEventListener('click', (event) => {
-			store.dispatch({type: 'canvasClick'})
+			// store.dispatch({type: 'canvasClick'})
+			const {enabled, building} = store.getState().buildingCursor
+			if (enabled){
+				store.dispatch(successBuilding()as any)
+			}
 		})
 	}
 

@@ -1,4 +1,7 @@
+import { Store } from "redux";
+
 export class Building{
+	sprite?: any
 	static cBuildings: {[key:string]:number} = {}
 	cost: number = 0
 	income: number = 0
@@ -38,4 +41,13 @@ export class GoldMine extends Building{
 export class CannonTower extends Building{
 	cost = 100
 	baseName: string = 'Cannon Tower'
+
+	init(){
+		super.init()
+		this.sprite = PIXI.Sprite.fromImage('public/chess_tower.png');	
+		// this.sprite.position.set(100, 100)
+		// this.sprite.visible = false
+		// this.sprite.alpha = 0.7
+		return this
+	}
 }
