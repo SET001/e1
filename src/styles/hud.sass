@@ -1,0 +1,27 @@
+$hudBorderColor: $second
+$hudBorderWidth: 1px
+$hudPadding: 2px
+$hudFontColor: $main
+
+.hud
+	padding: $hudPadding
+	margin-bottom: $hudPadding
+	color: $hudFontColor
+	background-color:	#eee
+	border: $hudBorderWidth solid $hudBorderColor
+	dt
+		float: left
+		width: 150px
+.hudPanel
+	position: absolute
+	right: $hudPadding
+	top: $hudPadding
+	width: 200px
+#stats
+	overflow: hidden
+#buildingsAvailable
+	ul
+		list-style: none
+		margin-bottom: $hudPadding
+	button
+		width: 100%

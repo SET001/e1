@@ -1,10 +1,12 @@
-import { createStore, combineReducers, Store} from 'redux'
-import { injectable, inject } from "inversify";
+import { createStore, combineReducers, Store, applyMiddleware} from 'redux'
+import { injectable } from "inversify";
 import "reflect-metadata";
+import thunk from 'redux-thunk'
 import {map, filter, reduce} from 'ramda'
 import * as reduceReducers from 'reduce-reducers';
 import { Action } from '../core/action';
 import {System} from './system'
+
 
 @injectable()
 export class Game{
@@ -34,7 +36,15 @@ export class Game{
 			...map(s=>s.reducer.bind(s), rootStateSystems),
 		])
 
-		this.store = createStore(reducer, rootState)
+		this.store = createStore(
+			reducer,
+			rootState,
+			applyMiddleware(thunk)
+		)
+	}
+	
+	init(){
+		map((s: System<any>)=>s.init(this.store), this.systems)
 	}
 
 	run(){
