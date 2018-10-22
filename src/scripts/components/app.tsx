@@ -1,41 +1,40 @@
-import * as React from "react";
-import HudPanel from './hudPanel'
-import { Game } from "../core/game";
+import * as React from 'react';
+import HudPanel from './hudPanel';
+import { Game } from '../core/game';
 
 export class App extends React.Component<{game: Game}>{
-	async componentDidMount(){
+  async componentDidMount() {
 
-		this.props.game.init()
-		this.props.game.run()
-						
-		
-		// const actions = {
-		// 	moveUp: false,
-		// 	moveDown: false,
-		// 	moveLeft: false,
-		// 	moveRight: false
-		// }
+		this.props.game.init();
+		this.props.game.run();
 
-		// console.log("%%%%", PIXI.utils.TextureCache['public/imgTanks.png'])
-		// const tankTexture = new PIXI.Texture(
-		// 	PIXI.utils.TextureCache['public/imgTanks.png'],
-		// 	new PIXI.Rectangle(0 * 48, 0, 48, 48)
-		// );
-		// const playerTankSprite = new PIXI.Sprite(tankTexture);
-		// playerTankSprite.x = playerOffsetX;
-		// playerTankSprite.y = playerOffsetY;
-		// app.stage.addChild(playerTankSprite)
+			// const actions = {
+			// 	moveUp: false,
+			// 	moveDown: false,
+			// 	moveLeft: false,
+			// 	moveRight: false
+			// }
+
+			// console.log("%%%%", PIXI.utils.TextureCache['public/imgTanks.png'])
+			// const tankTexture = new PIXI.Texture(
+			// 	PIXI.utils.TextureCache['public/imgTanks.png'],
+			// 	new PIXI.Rectangle(0 * 48, 0, 48, 48)
+			// );
+			// const playerTankSprite = new PIXI.Sprite(tankTexture);
+			// playerTankSprite.x = playerOffsetX;
+			// playerTankSprite.y = playerOffsetY;
+			// app.stage.addChild(playerTankSprite)
 	}
 
-	resize() {
+  resize() {
 		// const parent = app.view.parentNode as any;
 		// app.renderer.resize(parent.clientWidth, parent.clientHeight);
 		// rect.position.set(app.screen.width, app.screen.height);
 	}
 
-	render(){
+  render() {
 		return <div id="app">
 			<HudPanel />
-		</div>
+		</div>;
 	}
 }

@@ -1,14 +1,14 @@
-import { Container } from "inversify"
-import { Game } from './core/game'
-import * as Systems from './systems'
+import { Container } from 'inversify';
+import { Game } from './core/game';
+import * as Systems from './systems';
 
 class Action{
-  state: boolean = false
-  constructor(public name: string, public keys: string[]){}
+  state: boolean = false;
+  constructor(public name: string, public keys: string[]) {}
 }
 // import { PhysicService, CannonPhysicService } from './services/physic'
 
-const container = new Container()
+const container = new Container();
 // container.bind<any>('Game').to(Game)
 // container.bind<any>('SystemsList').toConstantValue([
 // 	new Systems.TickIncome(),
@@ -21,5 +21,5 @@ const container = new Container()
 // 	])
 // ])
 
-// const actions = 
-export { container }
+// const actions =
+export { container };

@@ -1,10 +1,9 @@
-import * as React from "react";
-import {connect} from 'react-redux'
-import {RootState} from '../state'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RootState } from '../state';
 
-
-class Hud extends React.Component<RootState>{
-	render(){
+class Stats extends React.Component<RootState>{
+  render() {
 		return <div className="hud" id="stats">
 			<dl>
 				<dt>Gold</dt>
@@ -20,11 +19,11 @@ class Hud extends React.Component<RootState>{
 				{/* <dt>controller up</dt>
 				<dd>{this.props.controller.up.toString()}</dd> */}
 			</dl>
-		</div>
+		</div>;
 	}
 }
 
 function mapStateToProps(state:any) {
   return state;
 }
-export default connect<RootState>(mapStateToProps)(Hud)
+export default connect<RootState>(mapStateToProps)(Stats);
