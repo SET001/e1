@@ -8,8 +8,10 @@ class Hud extends React.Component<RootState>{
 		return <div className="hud" id="stats">
 			<dl>
 				<dt>Gold</dt>
-				<dd>{~~this.props.resources.gold}</dd>
-				<dt>Workers</dt>
+				<dd>{Math.ceil(this.props.resources.gold)}</dd>
+				<dt>Creatures</dt>
+				<dd>{this.props.creatures.length}</dd>
+				{/* <dt>Workers</dt> */}
 				{/* <dd>{this.props.game.workers}</dd>
 				<dt>WorkerIncome</dt>
 				<dd>{this.props.game.workersIncome}</dd>

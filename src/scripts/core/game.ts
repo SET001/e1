@@ -6,7 +6,8 @@ import {map, filter, reduce} from 'ramda'
 import * as reduceReducers from 'reduce-reducers';
 import { Action } from '../core/action';
 import {System} from './system'
-
+import { spawnCreature} from '../systems/creatureSpawner'
+import { moveCreatures } from '../systems/creatureMove'
 
 @injectable()
 export class Game{
@@ -53,6 +54,10 @@ export class Game{
 
 	gameLoop(){
 		this.store.dispatch({type: 'tick'})
+		const spawn = Math.ceil(Math.random()*100) === 1
+		this.store.dispatch(spawnCreature() as any)
+		this.store.dispatch(moveCreatures())
+		this.store.dispatch({type: 'updateRenderObjects'});
 		requestAnimationFrame(this.gameLoop.bind(this));
 	}
 }

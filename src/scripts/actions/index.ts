@@ -1,6 +1,8 @@
 import { Building } from '../entities'
 import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from '../state';
+import { shouldSpawn, randomCreature } from '../systems';
+import { Creature } from '../entities/creatures';
 
 type getState = ()=>RootState
 //	resources
@@ -28,4 +30,8 @@ export const successBuilding = ()=> (dispatch: ThunkDispatch<any, any, any>, get
 	]).then(()=>dispatch({
 		type:'successBuilding'
 	}))
+}
+
+export const tick = () => (dispatch: ThunkDispatch<any, any, any>, getState: getState) => {
+	// dispatch(spawnCreature())
 }

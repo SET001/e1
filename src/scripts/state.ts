@@ -1,6 +1,7 @@
 import {LaserTower, CannonTower, Building, GoldMine} from './entities'
 import { BuildingCursor } from './entities/buildingCursor';
 import { Dispatch } from 'redux';
+import { Creature } from './entities/creatures';
 
 
 export interface RootState{
@@ -8,23 +9,22 @@ export interface RootState{
 	buildingCursor: BuildingCursor,
 	buildingsAvailable: Building[]
 	buildings: Building[],
+	creatures: Creature[],
 	resources: {
 		gold: number
 	}
 }
 
-const lt = new LaserTower()
-lt.init()
-const ct  =new CannonTower()
-ct.init()
-const gm = new GoldMine()
-gm.init()
+const lt = new LaserTower().init()
+const ct  =new CannonTower().init()
+const gm = new GoldMine().init()
+
 export const rootState: RootState =  {
 	buildingCursor: new BuildingCursor(),
 	buildingsAvailable: [lt, ct],
 	buildings: [gm],
+	creatures: [],
 	resources: {
 		gold: 10197
 	}
 }
-console.log("rootState", lt, ct, gm)

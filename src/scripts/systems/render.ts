@@ -1,15 +1,14 @@
 import * as PIXI from 'pixi.js'
 import { System } from '../core/system'
-import { Action } from '../core/action'
 import { Store } from 'redux'
 import { RootState } from '../state'
-import { Building } from '../entities';
 import { successBuilding } from '../actions'
 
 export interface RenderLayers {
 	cursor: PIXI.Container
 	buildings: PIXI.Container
 	tilemap: PIXI.Container
+	creatures: PIXI.Container
 }
 
 
@@ -33,14 +32,15 @@ export class RenderSystem extends System<any>{
 		this.app = new PIXI.Application(resolutionX, resolutionY);
 		this.layers = {
 			cursor: new PIXI.Container(),
+			creatures: new PIXI.Container(),
 			buildings: new PIXI.Container(),
 			tilemap: new  PIXI.Container()
 		}
 
 		this.app.stage.addChild(this.layers.tilemap)
 		this.app.stage.addChild(this.layers.buildings)
+		this.app.stage.addChild(this.layers.creatures)
 		this.app.stage.addChild(this.layers.cursor)
-
 		document.getElementById("app").appendChild(this.app.view);
 		this.app.view.addEventListener('click', (event) => {
 			// store.dispatch({type: 'canvasClick'})
@@ -54,6 +54,14 @@ export class RenderSystem extends System<any>{
 	addRenderObject(state: RootState, action: any){
 		const layer = this.layers[action.layer]
 		layer.addChild(action.payload);
+		return state
+	}
+
+	updateRenderObjects(state:RootState){
+		this.layers.creatures.children.map((creature, i)=>{
+			creature.position.x = state.creatures[i].position.x
+			creature.position.y = state.creatures[i].position.y
+		})
 		return state
 	}
 }
