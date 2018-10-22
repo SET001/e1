@@ -9,9 +9,10 @@ export class Building{
   type: string = 'Building';
 
   constructor() {
-    if (Building.cBuildings[this.constructor.name] === undefined) {
-      Building.cBuildings[this.constructor.name] = 0;
-    } else Building.cBuildings[this.constructor.name] = Building.cBuildings[this.constructor.name] + 1;
+    const { name } = this.constructor;
+    if (Building.cBuildings[name] === undefined) {
+      Building.cBuildings[name] = 0;
+    } else Building.cBuildings[name] = Building.cBuildings[name] + 1;
   }
 
   init() {
@@ -24,6 +25,14 @@ export class LaserTower extends Building{
   cost = 500;
   outcome = 5;
   baseName: string = 'Laser Tower';
+  fireRate = 1;
+  fireDamge = 1000;
+  fireRange = 300;
+  init() {
+    super.init();
+    this.sprite = PIXI.Sprite.fromImage('public/chess_tower.png');
+    return this;
+  }
 }
 
 export class GoldMine extends Building{
