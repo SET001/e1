@@ -1,30 +1,29 @@
-import {LaserTower, CannonTower, Building, GoldMine} from './entities'
+import { LaserTower, CannonTower, Building, GoldMine } from './entities';
 import { BuildingCursor } from './entities/buildingCursor';
 import { Dispatch } from 'redux';
 import { Creature } from './entities/creatures';
 
-
 export interface RootState{
-	dispatch?: Dispatch,
-	buildingCursor: BuildingCursor,
-	buildingsAvailable: Building[]
-	buildings: Building[],
-	creatures: Creature[],
-	resources: {
-		gold: number
-	}
+  dispatch?: Dispatch;
+  buildingCursor: BuildingCursor;
+  buildingsAvailable: Building[];
+  buildings: Building[];
+  creatures: Creature[];
+  resources: {
+    gold: number,
+  };
 }
 
-const lt = new LaserTower().init()
-const ct  =new CannonTower().init()
-const gm = new GoldMine().init()
+const lt = new LaserTower().init();
+const ct  = new CannonTower().init();
+const gm = new GoldMine().init();
 
 export const rootState: RootState =  {
-	buildingCursor: new BuildingCursor(),
-	buildingsAvailable: [lt, ct],
-	buildings: [gm],
-	creatures: [],
-	resources: {
-		gold: 10197
-	}
-}
+  buildingCursor: new BuildingCursor(),
+  buildingsAvailable: [lt, ct],
+  buildings: [gm],
+  creatures: [],
+  resources: {
+    gold: 10197,
+  },
+};
