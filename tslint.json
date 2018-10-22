@@ -3,6 +3,7 @@
   "rules": {
     "quotemark": [true, "single"],
     "semicolon": [true, "never"],
-    "align": [false]
+    "align": [false],
+    "eofline": [true]
   }
 }

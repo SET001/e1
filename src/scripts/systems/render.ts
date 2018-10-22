@@ -22,14 +22,18 @@ export interface RenderLayers {
 	// 	add new building
 	// 	add new render object
 
+  // 	render
+export const addRenderObject = (object: PIXI.Sprite, layer: string) => ({
+  layer,
+  type:'addRenderObject',
+  payload: object})
+
 export class RenderSystem extends System<any>{
   app: PIXI.Application
   layers: RenderLayers & {[keys:string]: PIXI.Container}
   init(store: Store) {
     const state:RootState = store.getState()
-    map((building: Building) => {
 
-    },  state.buildings)
     const resolutionX: number = window.innerWidth
     const resolutionY: number = window.innerHeight
     this.app = new PIXI.Application(resolutionX, resolutionY)
@@ -52,9 +56,16 @@ export class RenderSystem extends System<any>{
         store.dispatch(successBuilding()as any)
       }
     })
+
+    map((building: Building) => {
+      if (building.sprite) {
+        store.dispatch(addRenderObject(building.sprite, 'buildings'))
+      }
+    },  state.buildings)
   }
 
   addRenderObject(state: RootState, action: any) {
+    console.log('adding render object', action.layer, action.payload)
     const layer = this.layers[action.layer]
     layer.addChild(action.payload)
     return state

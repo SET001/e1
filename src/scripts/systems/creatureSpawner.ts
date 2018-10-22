@@ -2,7 +2,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { System } from '../core/system'
 import { RootState } from '../state'
 import { Creature } from '../entities/creatures'
-import { addRenderObject } from '../actions'
+import { addRenderObject } from './render'
 import { creatureAdd } from './creatures'
 
 type getState = () => RootState

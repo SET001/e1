@@ -7,6 +7,7 @@ export class Building{
   baseName: string = 'Building'
   name: string
   type: string = 'Building'
+  position: {x: number, y: number} = { x: 0, y: 0 }
 
   constructor() {
     const { name } = this.constructor
@@ -30,7 +31,30 @@ export class LaserTower extends Building{
   fireRange = 300
   init() {
     super.init()
-    this.sprite = PIXI.Sprite.fromImage('public/chess_tower.png')
+    const foo = () => {
+      fireRange.visible = !fireRange.visible
+    }
+    this.sprite = new PIXI.Container()
+    this.sprite.position.x = this.position.x
+    this.sprite.position.y = this.position.y
+
+    const sprite = PIXI.Sprite.fromImage('public/chess_tower.png')
+    sprite.interactive = true
+    sprite.on('pointerout', foo)
+    sprite.on('pointerover', foo)
+    this.sprite.addChild(sprite)
+
+    const fireRange = new PIXI.Graphics()
+    fireRange.lineStyle(5, 0xFFFFFF, 1)
+    fireRange.beginFill(0x0000FF, 1)
+    fireRange.drawCircle(32 / 2, 32 / 2, this.fireRange)
+    fireRange.endFill()
+    fireRange.alpha = 0.2
+    fireRange.visible = false
+    this.sprite.addChild(fireRange)
+    // circle.alpha = 0.5;
+    // stage.addChild(circle);
+
     return this
   }
 }

@@ -3,16 +3,11 @@ import { ThunkDispatch } from 'redux-thunk'
 import { RootState } from '../state'
 import { shouldSpawn, randomCreature } from '../systems'
 import { Creature } from '../entities/creatures'
+import { addRenderObject } from '../systems/render'
 
 type getState = () => RootState
 // 	resources
 export const udpateResources = (gold: number) => ({ type:'udpateResources', payload: gold })
-
-// 	render
-export const addRenderObject = (object: any, layer: string) => ({
-  layer,
-  type:'addRenderObject',
-  payload: object})
 
 // buildings
 export const addBuilding = (building: Building) => ({ type: 'addBuilding' })
