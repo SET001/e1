@@ -2,9 +2,9 @@ import * as React from 'react'
 import { Building } from '../entities'
 
 interface BuildingAvailableProps{
-  building: Building;
-  disabled: boolean;
-  click: Function;
+  building: Building
+  disabled: boolean
+  click: Function
 }
 
 class BuildingAvailable extends React.Component<BuildingAvailableProps>{
@@ -15,8 +15,8 @@ class BuildingAvailable extends React.Component<BuildingAvailableProps>{
         disabled={this.props.disabled}>
         {this.props.building.baseName} - {this.props.building.cost}$
       </button>
-    </li>;
+    </li>
   }
 }
 
-export default BuildingAvailable;
+export default BuildingAvailable

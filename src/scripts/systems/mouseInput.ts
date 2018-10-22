@@ -1,5 +1,5 @@
-import { System } from '../core/system';
-import { Store } from 'redux';
+import { System } from '../core/system'
+import { Store } from 'redux'
 
 export class MouseInputSystem extends System<any>{
   init(store: Store) {
@@ -7,7 +7,7 @@ export class MouseInputSystem extends System<any>{
       store.dispatch({type: 'mouseMove', payload: {
         x: event.clientX,
         y: event.clientY,
-      }});
-    });
+      }})
+    })
   }
 }

@@ -9,4 +9,4 @@ export const defaultState = {
     outcome: 0.0005,
     name: 'Citadel',
   }],
-};
+}

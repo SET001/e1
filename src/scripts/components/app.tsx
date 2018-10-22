@@ -1,12 +1,12 @@
-import * as React from 'react';
-import HudPanel from './hudPanel';
-import { Game } from '../core/game';
+import * as React from 'react'
+import HudPanel from './hudPanel'	//  tslint:disable-line
+import { Game } from '../core/game'
 
 export class App extends React.Component<{game: Game}>{
   async componentDidMount() {
 
-		this.props.game.init();
-		this.props.game.run();
+    this.props.game.init()
+    this.props.game.run()
 
 			// const actions = {
 			// 	moveUp: false,
@@ -24,17 +24,17 @@ export class App extends React.Component<{game: Game}>{
 			// playerTankSprite.x = playerOffsetX;
 			// playerTankSprite.y = playerOffsetY;
 			// app.stage.addChild(playerTankSprite)
-	}
+  }
 
   resize() {
 		// const parent = app.view.parentNode as any;
 		// app.renderer.resize(parent.clientWidth, parent.clientHeight);
 		// rect.position.set(app.screen.width, app.screen.height);
-	}
+  }
 
   render() {
-		return <div id="app">
+    return <div id='app'>
 			<HudPanel />
-		</div>;
-	}
+		</div>
+  }
 }
