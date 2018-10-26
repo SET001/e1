@@ -5,6 +5,7 @@ import { RootState } from '../state'
 import { successBuilding } from '../actions'
 import { Building } from '../entities'
 import { map } from 'ramda'
+import { Creature } from '../entities/creatures'
 
 export interface RenderLayers {
   cursor: PIXI.Container
@@ -50,24 +51,37 @@ export class RenderSystem extends System<any>{
     this.app.stage.addChild(this.layers.cursor)
     document.getElementById('app').appendChild(this.app.view)
     this.app.view.addEventListener('click', (event) => {
-          // store.dispatch({type: 'canvasClick'})
+      // store.dispatch({type: 'canvasClick'})
       const { enabled, building } = store.getState().buildingCursor
       if (enabled) {
+        store.dispatch({
+          building,
+          type: 'addBuilding',
+        })
         store.dispatch(successBuilding()as any)
       }
     })
 
-    map((building: Building) => {
-      if (building.sprite) {
-        store.dispatch(addRenderObject(building.sprite, 'buildings'))
+    map((entity: Building | Creature) => {
+      if (entity.sprite) {
+        store.dispatch(addRenderObject(entity.sprite, 'buildings'))
       }
-    },  state.buildings)
+    },  [
+      ...state.buildings,
+      ...state.creatures,
+    ])
   }
 
   addRenderObject(state: RootState, action: any) {
-    console.log('adding render object', action.layer, action.payload)
     const layer = this.layers[action.layer]
     layer.addChild(action.payload)
+    return state
+  }
+
+  removeRenderObject(state: RootState, action: any) {
+    // console.log('adding render object', action.layer, action.payload)
+    const layer = this.layers[action.layer]
+    layer.removeChild(action.payload)
     return state
   }
 

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "howler": "^2.0.15",
     "inversify": "^4.13.0",
     "pixi.js": "^4.8.2",
     "ramda": "^0.25.0",
@@ -39,6 +40,8 @@
     "gulp-sass": "^4.0.2",
     "gulp-typescript": "^5.0.0-alpha.3",
     "install": "^0.12.2",
+    "jsdom": "12.2.0",
+    "jsdom-global": "3.0.2",
     "mocha": "^5.2.0",
     "npm": "^6.4.1",
     "pixi-tilemap": "^1.2.4",

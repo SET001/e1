@@ -24,6 +24,8 @@ export class CursorSystem extends System<any>{
         Math.ceil(action.payload.x / 32 - 1) * 32,
         Math.ceil(action.payload.y / 32 - 1) * 32,
       )
+      state.buildingCursor.building.position.x = Math.ceil(action.payload.x / 32 - 1) * 32
+      state.buildingCursor.building.position.y = Math.ceil(action.payload.y / 32 - 1) * 32
     }
     return state
   }

@@ -12,6 +12,7 @@ export class System<T>{
   stateSliceName?: string
 
   init(store: Store) {}
+  controller(store: Store) {}
 
   reducer(state: T, action:Action) {
     if (action.type[0] !== '@') {

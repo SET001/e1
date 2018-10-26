@@ -56,11 +56,12 @@ export class Game{
   }
 
   gameLoop() {
-    this.store.dispatch({ type: 'tick' })
-    const spawn = Math.ceil(Math.random() * 100) === 1
-    // this.store.dispatch(spawnCreature() as any);
-    this.store.dispatch(moveCreatures())
-    this.store.dispatch({ type: 'updateRenderObjects' })
+    map(system => system.controller(this.store), this.systems)
+    // this.store.dispatch({ type: 'tick' })
+    // const spawn = Math.ceil(Math.random() * 100) === 1
+    // // this.store.dispatch(spawnCreature() as any);
+    // this.store.dispatch(moveCreatures())
+    // this.store.dispatch({ type: 'updateRenderObjects' })
     requestAnimationFrame(this.gameLoop.bind(this))
   }
 }

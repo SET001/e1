@@ -9,11 +9,12 @@ const addBuilding = (building: Building): AddBuildingAction => ({ type: 'addBuil
 
 export class BuildingsSystem extends System<Building[]>{
   stateSliceName = 'buildings'
-  addBuilding(buildings: Building[], { building }: AddBuildingAction) {
-    return [
+  addBuilding(buildings: Building[], action: AddBuildingAction) {
+    const newBuildings = [
       ...buildings,
-      building,
+      action.building,
     ]
+    return newBuildings
   }
 
   removeBuilding() {}

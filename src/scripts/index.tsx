@@ -12,13 +12,16 @@ import {
   MouseInputSystem,
   CursorSystem,
   ResourcesSystem,
-  CreatureSpawnerSystem } from './systems'
+  CreatureSpawnerSystem,
+  TowerSystem} from './systems'
 import { rootState } from './state'
 import { CreaturesSystem } from './systems/creatures'
 import { CreatureMoveSystem } from './systems/creatureMove'
+import { BuildingsSystem } from './systems/buildings'
 
 const tickIncomeModifier = 10000
 const game = new Game(rootState, [
+  new BuildingsSystem(),
   new TickIncomeSystem(tickIncomeModifier),
   new TickOutcomeSystem(tickIncomeModifier),
   new RenderSystem(),
@@ -29,6 +32,7 @@ const game = new Game(rootState, [
   // new CreatureSpawnerSystem(),
   new CreaturesSystem(),
   new CreatureMoveSystem(),
+  new TowerSystem(),
 ])
 
 ReactDOM.render(

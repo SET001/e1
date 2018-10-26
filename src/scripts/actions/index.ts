@@ -22,7 +22,7 @@ export const successBuilding = () =>
     return Promise.all([
       dispatch(addRenderObject(state.buildingCursor.building.sprite, 'buildings')),
       dispatch(udpateResources(gold - building.cost)),
-      dispatch(addBuilding(building)),
+      // dispatch(addBuilding(building)),
     ]).then(() => dispatch({
       type:'successBuilding',
     }))
