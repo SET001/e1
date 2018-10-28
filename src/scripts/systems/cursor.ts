@@ -3,6 +3,7 @@ import { System } from '../core/system'
 import { RootState } from '../state'
 import { Action } from '../core/action'
 import { Store } from 'redux'
+import { AddRenderObjectAction, RenderLayersNames } from './render'
 
 export class CursorSystem extends System<any>{
   sprite: any
@@ -11,7 +12,7 @@ export class CursorSystem extends System<any>{
     this.sprite.position.set(100, 100)
     this.sprite.visible = false
     this.sprite.alpha = 0.7
-    store.dispatch({ type: 'addRenderObject', payload: this.sprite, layer: 'cursor' })
+    store.dispatch(new AddRenderObjectAction(this.sprite, RenderLayersNames.cursor))
   }
 
   mouseMove(state: RootState, action: Action) {

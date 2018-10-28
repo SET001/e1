@@ -7,12 +7,9 @@ import { container } from '../test.container'
 
 describe('Tower', () => {
   it('canHaveTarget', () => {
-    assert.isFalse(canHaveTarget({}))
-    assert.isFalse(canHaveTarget({ asd:1 }))
     assert.isFalse(canHaveTarget({ target: undefined }))
 
     assert.isTrue(canHaveTarget({ target: null }))
-    assert.isTrue(canHaveTarget({ asd: 1, target: null }))
     assert.isTrue(canHaveTarget({ target: {} }))
     assert.isTrue(canHaveTarget({ target: 'assd' }))
     assert.isTrue(canHaveTarget({ target: 1 }))
@@ -31,6 +28,7 @@ describe('Tower', () => {
       creatures: [creature],
     }
     const action = {
+      type: 'changeTarget',
       building: lt1,
       target: creature,
     }
@@ -39,6 +37,7 @@ describe('Tower', () => {
     creature.position.y = 10
     assert.equal(newState.buildings[0].target, action.target)
     const finalState = system.changeTarget(newState, {
+      type: 'changeTarget',
       building: lt2,
       target: creature,
     })

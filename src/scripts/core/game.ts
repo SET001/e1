@@ -8,6 +8,7 @@ import { Action } from '../core/action'
 import { System } from './system'
 import { spawnCreature } from '../systems/creatureSpawner'
 import { moveCreatures } from '../systems/creatureMove'
+import { classNameType, plainObject } from '../middlewares'
 
 @injectable()
 export class Game{
@@ -43,7 +44,11 @@ export class Game{
     this.store = createStore(
       reducer,
       rootState,
-      applyMiddleware(thunk),
+      applyMiddleware(
+        thunk,
+        classNameType,
+        plainObject,
+      ),
     )
   }
 

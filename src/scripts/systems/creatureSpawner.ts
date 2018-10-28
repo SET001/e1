@@ -2,7 +2,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { System } from '../core/system'
 import { RootState } from '../state'
 import { Creature } from '../entities/creatures'
-import { addRenderObject } from './render'
+import { AddRenderObjectAction, RenderLayersNames } from './render'
 import { creatureAdd } from './creatures'
 
 type getState = () => RootState
@@ -44,7 +44,7 @@ export const spawnCreature = () => (dispatch: ThunkDispatch<any, any, any>, getS
   if (shouldSpawn()) {
     const creature: Creature = randomCreature()
     return Promise.all([
-      dispatch(addRenderObject(creature.sprite, 'creatures')),
+      dispatch(new AddRenderObjectAction(creature.sprite, RenderLayersNames.creatures)),
       dispatch(creatureAdd(creature)),
     ])
   }

@@ -1,34 +1,43 @@
 import { System } from '../core/system'
-import { compose, map, filter, ifElse } from 'ramda'
+import { compose, map, filter } from 'ramda'
 import { RootState } from '../state'
 import { Building } from '../entities'
 import { Creature } from '../entities/creatures'
 import { Store } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
-import buildings from '../components/buildings'
-import { TargetTypeEnum } from 'inversify'
+import { Action } from '../actions'
+import { RenderLayersNames, AddRenderObjectAction } from './render'
+
 // import { Howl, Howler } from 'howler'
 
-export const canHaveTarget = entity => entity.target !== undefined
-export const isIdling = entity => entity.state === 'idle'
-export const isHaveTarget = entity => entity.target
+interface Targerable{
+  target: any
+}
+
+interface Stateable{
+  state: string
+}
+
+export const canHaveTarget = (entity: any): boolean => entity.target !== undefined
+export const isIdling = (entity: any): boolean => entity.state === 'idle'
+export const isHaveTarget = (entity: Targerable) => entity.target
 export const searchTarget = (creatures: Creature[]) => (building: Building): Creature => {
   return creatures[0]
-  // console.log('searching for target among', creatures)
 }
 
 type Shooter = Building
 type Target = Creature
 
+const wait = (time: number = 0) => new Promise(resolve => setTimeout(resolve, time))
 export const isTargetActual = (): boolean => true
-const wait = (time: number = 0) => new Promise((resolve, reject) => setTimeout(resolve, time))
-export const endReload = (shooter: Shooter) => ({
-  shooter,
-  type: 'endReload',
-})
+
+export class EndReloadAction{
+  constructor(public shooter: Shooter) {}
+}
+
 export const startReload = (shooter: Shooter) =>
   (dispatch: ThunkDispatch<any, any, any>) => {
-    wait(2000).then(() => dispatch(endReload(shooter)))
+    wait(2000).then(() => dispatch(new EndReloadAction(shooter)))
     dispatch({
       shooter,
       type: 'startReload',
@@ -39,7 +48,7 @@ export const endShoot = (shooter: Shooter) =>
   (dispatch: ThunkDispatch<any, any, any>) => {
     dispatch({
       type: 'removeRenderObject',
-      layer: 'creatures',
+      layer: RenderLayersNames.creatures,
       payload: shooter.shootings,
     })
     dispatch(startReload(shooter))
@@ -49,38 +58,26 @@ export const endShoot = (shooter: Shooter) =>
     })
   }
 
-export const startShoot = (shooter: Shooter) =>
-  (dispatch: ThunkDispatch<any, any, any>) => {
-    const shoot = shooter.showShoot()
-    dispatch({
-      type: 'addRenderObject',
-      layer: 'creatures',
-      payload: shoot,
-    })
-    // const sound = new Howl({
-    //   src: ['public/laser.wav'],
-    // })
+export class StartShootAction extends Action{
+  constructor(public shooter: Shooter) { super() }
+  action() {
+    return (dispatch: ThunkDispatch<any, any, any>) => {
+      const shoot = this.shooter.showShoot()
+      dispatch(new AddRenderObjectAction(shoot, RenderLayersNames.creatures))
+      // const sound = new Howl({
+      //   src: ['public/laser.wav'],
+      // })
 
-    // sound.play()
-
-    wait(1000).then(() => dispatch(endShoot(shooter)))
-    dispatch({
-      shooter,
-      type: 'startShoot',
-    })
+      // sound.play()
+      dispatch({ ...this as Object })
+      wait(1000).then(() => dispatch(endShoot(this.shooter)))
+    }
   }
+}
 
-export const changeTarget = (building: Building, target: Creature) =>
-  // console.log('triggering change target action')
-  ({
-    building,
-    target,
-    type: 'changeTarget',
-  })
-
-export const proceedTarget = (creatures: Creature[]) => (building: Building) => true
-  // (dispatch: ThunkDispatch<any, any, any>) =>
-	//   ifElse(isTargetActual, dispatch(startShoot), searchTarget(creatures))
+export class ChangeTargetAction extends Action{
+  constructor(public building: Building, public target: Target) { super() }
+}
 
 export class TowerSystem extends System<any>{
   controller(store: Store) {
@@ -88,20 +85,18 @@ export class TowerSystem extends System<any>{
     const proceedBuilding = (building: Building) => {
       if (isHaveTarget(building)) {
         if (isTargetActual()) {
-          store.dispatch(startShoot(building) as any)
+          store.dispatch(new StartShootAction(building).action() as any)
         }
       } else {
-        // console.log('!!!')
         const target = searchTarget(creatures)(building)
-        // console.log('>>>', target)
-        if (target) store.dispatch(changeTarget(building, target) as any)
+        if (target) store.dispatch(new ChangeTargetAction(building, target))
       }
     }
     compose(
       map(proceedBuilding),
-      filter(isIdling),
       filter(canHaveTarget),
-    )(buildings as any)
+      filter(isIdling),
+    )(buildings as Building[])
     // return state
     // 	found target
     // 	ensure target exist
@@ -109,7 +104,7 @@ export class TowerSystem extends System<any>{
     // 	shoot
   }
 
-  changeTarget(state: RootState, action) {
+  changeTarget(state: RootState, action: ChangeTargetAction) {
     const buildings = map((building: Building) => {
       if (building.id === action.building.id) {
         building.target = action.target
@@ -135,7 +130,7 @@ export class TowerSystem extends System<any>{
     }
   }
 
-  endReload(state, action) {
+  endReload(state: RootState, action) {
     const buildings = map((building: Building) => {
       if (building.id === action.shooter.id) {
         building.state = 'idle'

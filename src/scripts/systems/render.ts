@@ -2,18 +2,24 @@ import * as PIXI from 'pixi.js'
 import { System } from '../core/system'
 import { Store } from 'redux'
 import { RootState } from '../state'
-import { successBuilding } from '../actions'
 import { Building } from '../entities'
 import { map } from 'ramda'
 import { Creature } from '../entities/creatures'
 
-export interface RenderLayers {
-  cursor: PIXI.Container
-  buildings: PIXI.Container
-  tilemap: PIXI.Container
-  creatures: PIXI.Container
+import { Action } from '../actions/index'
+console.log('>>>', Action)
+export enum RenderLayersNames{
+  cursor = 'cursor',
+  buildings = 'buildings',
+  tilemap = 'tilemap',
+  creatures = 'creatures',
 }
 
+type RenderLayers = {[key in RenderLayersNames]: PIXI.Container}
+
+export class AddRenderObjectAction extends Action{
+  constructor(public object: any, public layer: RenderLayersNames) { super() }
+}
 // const buyBuildingAction = (building: Building) => (dispatch: Function)  =>
 // 	Promise.all([
 // 		dispatch(udpateResources(building.cost)),
@@ -24,14 +30,10 @@ export interface RenderLayers {
 	// 	add new render object
 
   // 	render
-export const addRenderObject = (object: PIXI.Sprite, layer: string) => ({
-  layer,
-  type:'addRenderObject',
-  payload: object})
 
 export class RenderSystem extends System<any>{
   app: PIXI.Application
-  layers: RenderLayers & {[keys:string]: PIXI.Container}
+  layers: RenderLayers
   init(store: Store) {
     const state:RootState = store.getState()
 
@@ -64,7 +66,7 @@ export class RenderSystem extends System<any>{
 
     map((entity: Building | Creature) => {
       if (entity.sprite) {
-        store.dispatch(addRenderObject(entity.sprite, 'buildings'))
+        store.dispatch(new AddRenderObjectAction(entity.sprite, RenderLayersNames.buildings))
       }
     },  [
       ...state.buildings,
@@ -72,9 +74,9 @@ export class RenderSystem extends System<any>{
     ])
   }
 
-  addRenderObject(state: RootState, action: any) {
+  addRenderObject(state: RootState, action: AddRenderObjectAction) {
     const layer = this.layers[action.layer]
-    layer.addChild(action.payload)
+    layer.addChild(action.object)
     return state
   }
 

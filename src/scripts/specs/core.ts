@@ -88,7 +88,7 @@ describe('core', () => {
         new Building(100, 10, 1, 'asd'),
       ],
       resources: {
-        gold: 0,
+        gold: 10026,
       },
     }
 
