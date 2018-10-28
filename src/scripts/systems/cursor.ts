@@ -4,6 +4,8 @@ import { RootState } from '../state'
 import { Action } from '../core/action'
 import { Store } from 'redux'
 import { AddRenderObjectAction, RenderLayersNames } from './render'
+import { MouseMoveAction } from './mouseInput'
+import { StartBuildingAction } from './buildings'
 
 export class CursorSystem extends System<any>{
   sprite: any
@@ -15,18 +17,18 @@ export class CursorSystem extends System<any>{
     store.dispatch(new AddRenderObjectAction(this.sprite, RenderLayersNames.cursor))
   }
 
-  mouseMove(state: RootState, action: Action) {
+  mouseMove(state: RootState, action: MouseMoveAction) {
     if (state.buildingCursor.enabled) {
       this.sprite.position.set(
-        Math.ceil(action.payload.x / 32 - 1) * 32,
-        Math.ceil(action.payload.y / 32 - 1) * 32,
+        Math.ceil(action.x / 32 - 1) * 32,
+        Math.ceil(action.y / 32 - 1) * 32,
       )
       state.buildingCursor.building.sprite.position.set(
-        Math.ceil(action.payload.x / 32 - 1) * 32,
-        Math.ceil(action.payload.y / 32 - 1) * 32,
+        Math.ceil(action.x / 32 - 1) * 32,
+        Math.ceil(action.y / 32 - 1) * 32,
       )
-      state.buildingCursor.building.position.x = Math.ceil(action.payload.x / 32 - 1) * 32
-      state.buildingCursor.building.position.y = Math.ceil(action.payload.y / 32 - 1) * 32
+      state.buildingCursor.building.position.x = Math.ceil(action.x / 32 - 1) * 32
+      state.buildingCursor.building.position.y = Math.ceil(action.y / 32 - 1) * 32
     }
     return state
   }
@@ -49,13 +51,13 @@ export class CursorSystem extends System<any>{
     return state
   }
 
-  startBuilding(state: RootState, action:Action) {
+  startBuilding(state: RootState, action: StartBuildingAction) {
     this.sprite.visible = true
     return {
       ...state,
       buildingCursor: {
         ...state.buildingCursor,
-        building: action.payload,
+        building: action.building,
         enabled: this.sprite.visible,
       },
     }

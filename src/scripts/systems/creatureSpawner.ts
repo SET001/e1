@@ -3,7 +3,7 @@ import { System } from '../core/system'
 import { RootState } from '../state'
 import { Creature } from '../entities/creatures'
 import { AddRenderObjectAction, RenderLayersNames } from './render'
-import { creatureAdd } from './creatures'
+import { CreatureAddAction } from './creatures'
 
 type getState = () => RootState
 
@@ -45,7 +45,7 @@ export const spawnCreature = () => (dispatch: ThunkDispatch<any, any, any>, getS
     const creature: Creature = randomCreature()
     return Promise.all([
       dispatch(new AddRenderObjectAction(creature.sprite, RenderLayersNames.creatures)),
-      dispatch(creatureAdd(creature)),
+      dispatch(new CreatureAddAction(creature)),
     ])
   }
 }

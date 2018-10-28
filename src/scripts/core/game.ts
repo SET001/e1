@@ -1,4 +1,4 @@
-import { createStore, combineReducers, Store, applyMiddleware } from 'redux'
+import { createStore, combineReducers, Store, applyMiddleware, compose } from 'redux'
 import { injectable } from 'inversify'
 import 'reflect-metadata'
 import thunk from 'redux-thunk';  //  tslint:disable-line
@@ -9,6 +9,7 @@ import { System } from './system'
 import { spawnCreature } from '../systems/creatureSpawner'
 import { moveCreatures } from '../systems/creatureMove'
 import { classNameType, plainObject } from '../middlewares'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 @injectable()
 export class Game{
@@ -40,14 +41,17 @@ export class Game{
       combineReducers(sliceStateReducers),
       ...map(s => s.reducer.bind(s), rootStateSystems),
     ])
+    // console.log('>>>', window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
 
     this.store = createStore(
       reducer,
       rootState,
-      applyMiddleware(
-        thunk,
-        classNameType,
-        plainObject,
+      composeWithDevTools(
+        applyMiddleware(
+          thunk,
+          classNameType,
+          plainObject,
+        ),
       ),
     )
   }

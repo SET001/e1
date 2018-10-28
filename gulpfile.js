@@ -7,22 +7,15 @@ const browserify = require('browserify')
 const source = require('vinyl-source-stream')
 const sass = require('gulp-sass')
 
-const errorHandler = error => console.error(error.toString())
+const errorHandler = error => {
+	console.error(error.toString())
+}
 
 gulp.task('compile:scripts', ()=>	gulp
 	.src(getWatchPath(config.ts))
-	.pipe(tsProject())
+	.pipe(tsProject(ts.reporter.longReporter()))
 	.on('error', errorHandler)
 	.pipe(gulp.dest('dist/src'))
-	// browserify({
-	// 	entries: `${config.ts.source}/${config.ts.entry}`,
-	// 	debug: true,
-	// })
-	// .plugin(tsify)
-	// .bundle()
-	// .on('error', errorHandler)
-	// .pipe(source('index.js'))
-  // .pipe(gulp.dest(config.ts.output))
 )
 
 gulp.task('bundle', ()=>
@@ -30,7 +23,10 @@ gulp.task('bundle', ()=>
 		entries: 'dist/src/index.js'
 	})
 	.bundle()
-	.on('error', errorHandler)
+	.on('error', function(error){
+		console.error(error.toString())
+		this.emit('end')
+	})
 	.pipe(source('index.js'))
 	.pipe(gulp.dest('dist/bin'))
 )

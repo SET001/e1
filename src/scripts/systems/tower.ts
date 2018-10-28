@@ -5,8 +5,8 @@ import { Building } from '../entities'
 import { Creature } from '../entities/creatures'
 import { Store } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
-import { Action } from '../actions'
-import { RenderLayersNames, AddRenderObjectAction } from './render'
+import { Action } from '../core'
+import { RenderLayersNames, AddRenderObjectAction, RemoveRenderObjectAction } from './render'
 
 // import { Howl, Howler } from 'howler'
 
@@ -35,28 +35,26 @@ export class EndReloadAction{
   constructor(public shooter: Shooter) {}
 }
 
-export const startReload = (shooter: Shooter) =>
-  (dispatch: ThunkDispatch<any, any, any>) => {
-    wait(2000).then(() => dispatch(new EndReloadAction(shooter)))
-    dispatch({
-      shooter,
-      type: 'startReload',
-    })
+export class StartReloadAction extends Action{
+  constructor(public shooter: Shooter) { super() }
+  action() {
+    return (dispatch: ThunkDispatch<any, any, any>) => {
+      wait(2000).then(() => dispatch(new EndReloadAction(this.shooter)))
+      dispatch({ ... this as Object })
+    }
   }
+}
 
-export const endShoot = (shooter: Shooter) =>
-  (dispatch: ThunkDispatch<any, any, any>) => {
-    dispatch({
-      type: 'removeRenderObject',
-      layer: RenderLayersNames.creatures,
-      payload: shooter.shootings,
-    })
-    dispatch(startReload(shooter))
-    dispatch({
-      shooter,
-      type: 'endShoot',
-    })
+export class EndShootAction extends Action{
+  constructor(public shooter: Shooter) { super() }
+  action() {
+    return (dispatch: ThunkDispatch<any, any, any>) => {
+      dispatch(new RemoveRenderObjectAction(this.shooter.shootings, RenderLayersNames.creatures))
+      dispatch((new StartReloadAction(this.shooter)).action())
+      dispatch({ ... this as Object })
+    }
   }
+}
 
 export class StartShootAction extends Action{
   constructor(public shooter: Shooter) { super() }
@@ -70,7 +68,7 @@ export class StartShootAction extends Action{
 
       // sound.play()
       dispatch({ ...this as Object })
-      wait(1000).then(() => dispatch(endShoot(this.shooter)))
+      wait(1000).then(() => dispatch(new EndShootAction(this.shooter).action()))
     }
   }
 }
@@ -117,7 +115,7 @@ export class TowerSystem extends System<any>{
     }
   }
 
-  startShoot(state: RootState, action) {
+  startShoot(state: RootState, action: StartShootAction) {
     const buildings = map((building: Building) => {
       if (building.id === action.shooter.id) {
         building.state = 'shooting'
@@ -130,7 +128,7 @@ export class TowerSystem extends System<any>{
     }
   }
 
-  endReload(state: RootState, action) {
+  endReload(state: RootState, action: EndReloadAction) {
     const buildings = map((building: Building) => {
       if (building.id === action.shooter.id) {
         building.state = 'idle'

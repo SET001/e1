@@ -1,14 +1,17 @@
-import { System } from '../core/system'
-import { Action } from '../core/action'
+import { System, Action } from '../core'
 import { RootState } from '../state'
+
+export class UpdateResourcesAction extends Action{
+  constructor(public gold: number) { super() }
+}
 export class ResourcesSystem extends System<any>{
-  udpateResources(state: RootState, action:Action) {
+  udpateResources(state: RootState, action:UpdateResourcesAction) {
     console.log('updating res', action)
     return {
       ...state,
       resources: {
         ...state.resources,
-        gold: action.payload,
+        gold: action.gold,
       },
     }
   }

@@ -1,9 +1,10 @@
-import { canHaveTarget, TowerSystem } from '../systems/tower'
+import { canHaveTarget, TowerSystem, StartShootAction } from '../systems/tower'
 
 import { assert } from 'chai'
 import { Creature } from '../entities/creatures'
 import { LaserTower } from '../entities'
 import { container } from '../test.container'
+import { StartBuildingAction } from '../systems/buildings'
 
 describe('Tower', () => {
   it('canHaveTarget', () => {
@@ -53,10 +54,7 @@ describe('Tower', () => {
       buildings: [lt1, lt2],
       creatures: [creature],
     }
-    const action = {
-      shooter: lt1,
-      target: creature,
-    }
+    const action = new StartShootAction(lt1)
     const newState = system.startShoot(state, action)
     console.log(newState.buildings[0].state)
   })

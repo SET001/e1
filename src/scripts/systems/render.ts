@@ -6,18 +6,22 @@ import { Building } from '../entities'
 import { map } from 'ramda'
 import { Creature } from '../entities/creatures'
 
-import { Action } from '../actions/index'
-console.log('>>>', Action)
+import { Action } from '../core/action'
+import { SuccessBuildingAction, AddBuildingAction } from './buildings'
+
 export enum RenderLayersNames{
   cursor = 'cursor',
   buildings = 'buildings',
   tilemap = 'tilemap',
   creatures = 'creatures',
 }
-
 type RenderLayers = {[key in RenderLayersNames]: PIXI.Container}
 
 export class AddRenderObjectAction extends Action{
+  constructor(public object: any, public layer: RenderLayersNames) { super() }
+}
+
+export class RemoveRenderObjectAction extends Action{
   constructor(public object: any, public layer: RenderLayersNames) { super() }
 }
 // const buyBuildingAction = (building: Building) => (dispatch: Function)  =>
@@ -56,11 +60,8 @@ export class RenderSystem extends System<any>{
       // store.dispatch({type: 'canvasClick'})
       const { enabled, building } = store.getState().buildingCursor
       if (enabled) {
-        store.dispatch({
-          building,
-          type: 'addBuilding',
-        })
-        store.dispatch(successBuilding()as any)
+        // store.dispatch(new AddBuildingAction(building)),
+        store.dispatch(new SuccessBuildingAction(building).action() as any)
       }
     })
 
@@ -80,10 +81,9 @@ export class RenderSystem extends System<any>{
     return state
   }
 
-  removeRenderObject(state: RootState, action: any) {
-    // console.log('adding render object', action.layer, action.payload)
+  removeRenderObject(state: RootState, action: RemoveRenderObjectAction) {
     const layer = this.layers[action.layer]
-    layer.removeChild(action.payload)
+    layer.removeChild(action.object)
     return state
   }
 
