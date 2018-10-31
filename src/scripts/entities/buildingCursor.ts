@@ -1,4 +1,3 @@
-import buildings from '../components/buildings'
 import { Building } from './building'
 
 interface Vec2 {

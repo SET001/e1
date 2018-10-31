@@ -1,10 +1,10 @@
-import { createStore, combineReducers, Store, applyMiddleware, compose } from 'redux'
+import { createStore, combineReducers, Store, applyMiddleware } from 'redux'
 import { injectable } from 'inversify'
 import 'reflect-metadata'
 import thunk from 'redux-thunk';  //  tslint:disable-line
-import { map, filter, reduce } from 'ramda'
+import { compose, reduce, filter, map, values, without, isEmpty, toPairs, find } from 'ramda'
 import * as reduceReducers from 'reduce-reducers'
-import { Action } from '../core/action'
+import { Action, Entity } from '../core'
 import { System } from './system'
 import { spawnCreature } from '../systems/creatureSpawner'
 import { moveCreatures } from '../systems/creatureMove'
@@ -54,6 +54,24 @@ export class Game{
         ),
       ),
     )
+  }
+
+  addEntity(entity: Entity) {
+    const constructors = compose(map(value => value.constructor.name), values)
+    map((system) => {
+      const { componentsGroup } = system
+      const isMatchGroup = isEmpty(without(constructors(entity),	constructors(componentsGroup)))
+      if (isMatchGroup) {
+        const keys: {[k:string]:any} = toPairs(componentsGroup).reduce(
+          (acc: {[k:string]:any}, [key, value]) => {
+            acc[key] = find((v: Object) =>
+              value.constructor.name === v.constructor.name, values(entity),
+            )
+            return acc
+          }, {})
+        system.onNewEntity(keys)
+      }
+    }, this.systems)
   }
 
   init() {
