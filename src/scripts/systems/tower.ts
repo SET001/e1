@@ -48,30 +48,30 @@ export class StartReloadAction extends Action{
 
 export class EndShootAction extends Action{
   constructor(public shooter: Shooter) { super() }
-  action() {
-    return (dispatch: ThunkDispatch<any, any, any>) => {
-      dispatch(new RemoveRenderObjectAction(this.shooter.shootings, RenderLayersNames.creatures))
-      dispatch((new StartReloadAction(this.shooter)).action())
-      dispatch({ ... this as Object })
-    }
-  }
+  // action() {
+  //   return (dispatch: ThunkDispatch<any, any, any>) => {
+  //     dispatch(new RemoveRenderObjectAction(this.shooter.shootings, RenderLayersNames.creatures))
+  //     dispatch((new StartReloadAction(this.shooter)).action())
+  //     dispatch({ ... this as Object })
+  //   }
+  // }
 }
 
 export class StartShootAction extends Action{
   constructor(public shooter: Shooter) { super() }
-  action() {
-    return (dispatch: ThunkDispatch<any, any, any>) => {
-      const shoot = this.shooter.showShoot()
-      dispatch(new AddRenderObjectAction(shoot, RenderLayersNames.creatures))
-      // const sound = new Howl({
-      //   src: ['public/laser.wav'],
-      // })
+  // action() {
+  //   return (dispatch: ThunkDispatch<any, any, any>) => {
+  //     const shoot = this.shooter.showShoot()
+  //     dispatch(new AddRenderObjectAction(shoot, RenderLayersNames.creatures))
+  //     // const sound = new Howl({
+  //     //   src: ['public/laser.wav'],
+  //     // })
 
-      // sound.play()
-      dispatch({ ...this as Object })
-      wait(1000).then(() => dispatch(new EndShootAction(this.shooter).action()))
-    }
-  }
+  //     // sound.play()
+  //     dispatch({ ...this as Object })
+  //     wait(1000).then(() => dispatch(new EndShootAction(this.shooter).action()))
+  //   }
+  // }
 }
 
 export class ChangeTargetAction extends Action{
@@ -80,22 +80,23 @@ export class ChangeTargetAction extends Action{
 
 export class TowerSystem extends System<any>{
   controller(store: Store) {
-    const { buildings, creatures } = store.getState()
-    const proceedBuilding = (building: Building) => {
-      if (isHaveTarget(building)) {
-        if (isTargetActual()) {
-          store.dispatch(new StartShootAction(building).action() as any)
-        }
-      } else {
-        const target = searchTarget(creatures)(building)
-        if (target) store.dispatch(new ChangeTargetAction(building, target))
-      }
-    }
-    compose(
-      map(proceedBuilding),
-      filter(canHaveTarget),
-      filter(isIdling),
-    )(buildings as Building[])
+    // const { buildings, creatures } = store.getState()
+    // const proceedBuilding = (building: Building) => {
+    //   if (isHaveTarget(building)) {
+    //     if (isTargetActual()) {
+    //       store.dispatch(new StartShootAction(building).action() as any)
+    //     }
+    //   } else {
+    //     const target = searchTarget(creatures)(building)
+    //     if (target) store.dispatch(new ChangeTargetAction(building, target))
+    //   }
+    // }
+    // compose(
+    //   map(proceedBuilding),
+    //   filter(canHaveTarget),
+    //   filter(isIdling),
+    // )(buildings as Building[])
+
     // return state
     // 	found target
     // 	ensure target exist
@@ -103,44 +104,44 @@ export class TowerSystem extends System<any>{
     // 	shoot
   }
 
-  changeTarget(state: RootState, action: ChangeTargetAction) {
-    const buildings = map((building: Building) => {
-      if (building.id === action.building.id) {
-        building.target = action.target
-      }
-      return building
-    }, state.buildings)
-    return {
-      ...state,
-      buildings,
-    }
-  }
+  // changeTarget(state: RootState, action: ChangeTargetAction) {
+  //   const buildings = map((building: Building) => {
+  //     if (building.id === action.building.id) {
+  //       building.target = action.target
+  //     }
+  //     return building
+  //   }, state.buildings)
+  //   return {
+  //     ...state,
+  //     buildings,
+  //   }
+  // }
 
-  startShoot(state: RootState, action: StartShootAction) {
-    const buildings = map((building: Building) => {
-      if (building.id === action.shooter.id) {
-        building.state = 'shooting'
-      }
-      return building
-    }, state.buildings)
-    return {
-      ...state,
-      buildings,
-    }
-  }
+  // startShoot(state: RootState, action: StartShootAction) {
+  //   const buildings = map((building: Building) => {
+  //     if (building.id === action.shooter.id) {
+  //       building.state = 'shooting'
+  //     }
+  //     return building
+  //   }, state.buildings)
+  //   return {
+  //     ...state,
+  //     buildings,
+  //   }
+  // }
 
-  endReload(state: RootState, action: EndReloadAction) {
-    const buildings = map((building: Building) => {
-      if (building.id === action.shooter.id) {
-        building.state = 'idle'
-      }
-      return building
-    }, state.buildings)
-    return {
-      ...state,
-      buildings,
-    }
-  }
+  // endReload(state: RootState, action: EndReloadAction) {
+  //   const buildings = map((building: Building) => {
+  //     if (building.id === action.shooter.id) {
+  //       building.state = 'idle'
+  //     }
+  //     return building
+  //   }, state.buildings)
+  //   return {
+  //     ...state,
+  //     buildings,
+  //   }
+  // }
 }
 
 // ifElse(

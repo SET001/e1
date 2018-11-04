@@ -5,4 +5,8 @@ export class Action{
   constructor() {
     this.type = lowerizeFirstLetter(this.constructor.name.split('Action').shift())
   }
+
+  action(): Object {
+    return this
+  }
 }

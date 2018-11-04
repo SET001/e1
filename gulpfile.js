@@ -6,6 +6,7 @@ const tsify = require('tsify')
 const browserify = require('browserify')
 const source = require('vinyl-source-stream')
 const sass = require('gulp-sass')
+const sourcemaps = require('gulp-sourcemaps');
 
 const errorHandler = error => {
 	console.error(error.toString())
@@ -13,8 +14,10 @@ const errorHandler = error => {
 
 gulp.task('compile:scripts', ()=>	gulp
 	.src(getWatchPath(config.ts))
+	.pipe(sourcemaps.init())
 	.pipe(tsProject(ts.reporter.longReporter()))
 	.on('error', errorHandler)
+	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('dist/src'))
 )
 

@@ -1,5 +1,4 @@
-export * from './game'
-export * from './system'
 export * from './action'
-export * from './entity'
 export * from './component'
+export * from './system'
+export * from './entity'

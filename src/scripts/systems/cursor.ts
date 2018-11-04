@@ -17,21 +17,21 @@ export class CursorSystem extends System<any>{
     store.dispatch(new AddRenderObjectAction(this.sprite, RenderLayersNames.cursor))
   }
 
-  mouseMove(state: RootState, action: MouseMoveAction) {
-    if (state.buildingCursor.enabled) {
-      this.sprite.position.set(
-        Math.ceil(action.x / 32 - 1) * 32,
-        Math.ceil(action.y / 32 - 1) * 32,
-      )
-      state.buildingCursor.building.sprite.position.set(
-        Math.ceil(action.x / 32 - 1) * 32,
-        Math.ceil(action.y / 32 - 1) * 32,
-      )
-      state.buildingCursor.building.position.x = Math.ceil(action.x / 32 - 1) * 32
-      state.buildingCursor.building.position.y = Math.ceil(action.y / 32 - 1) * 32
-    }
-    return state
-  }
+  // mouseMove(state: RootState, action: MouseMoveAction) {
+  //   if (state.buildingCursor.enabled) {
+  //     this.sprite.position.set(
+  //       Math.ceil(action.x / 32 - 1) * 32,
+  //       Math.ceil(action.y / 32 - 1) * 32,
+  //     )
+  //     state.buildingCursor.building.sprite.position.set(
+  //       Math.ceil(action.x / 32 - 1) * 32,
+  //       Math.ceil(action.y / 32 - 1) * 32,
+  //     )
+  //     state.buildingCursor.building.position.x = Math.ceil(action.x / 32 - 1) * 32
+  //     state.buildingCursor.building.position.y = Math.ceil(action.y / 32 - 1) * 32
+  //   }
+  //   return state
+  // }
 
   canvasClick(state: RootState) {
     if (state.buildingCursor.enabled) {

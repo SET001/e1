@@ -23,9 +23,9 @@ export class SuccessBuildingAction extends Action{
       const { gold } = state.resources
       console.log('success building', building, getState())
       return Promise.all([
-        dispatch(new AddRenderObjectAction(
-          state.buildingCursor.building.sprite, RenderLayersNames.buildings,
-        )),
+        // dispatch(new AddRenderObjectAction(
+        //   state.buildingCursor.building.sprite, RenderLayersNames.buildings,
+        // )),
         // dispatch(udpateResources(gold - building.cost)),
         dispatch(new AddBuildingAction(building)),
       ]).then(() => dispatch({ ... this as Object }))
@@ -34,8 +34,7 @@ export class SuccessBuildingAction extends Action{
 }
 
 export class BuildingsSystem extends System<Building[]>{
-  stateSliceName = 'buildings'
-  addBuilding(buildings: Building[], action: AddBuildingAction) {
+  addBuilding(buildings: Building[] = [], action: AddBuildingAction) {
     const newBuildings = [
       ...buildings,
       action.building,

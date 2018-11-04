@@ -1,1 +1,4 @@
-export const tileSize = 32
+export default {
+  tileSize: 32,
+  publicPath: 'public',
+}

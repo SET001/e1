@@ -10,8 +10,11 @@ const firsToLower:Function = compose(
 export class System<T>{
   [key: string]: any
   stateSliceName?: string
-
-  init(store: Store) {}
+  store: Store
+  componentsGroup?: {[key: string]: any}
+  init(store: Store) {
+    this.store = store
+  }
   controller(store: Store) {}
 
   reducer(state: T, action:Action) {
@@ -22,8 +25,10 @@ export class System<T>{
     }
     return state
   }
+  onNewEntity(entity: Object) {}
+  onRemoveEntity(entity: Object) {}
 }
 
-export function systemsReducer(systems:System<any>[]):Reducer {
-  return state => state
-}
+// export function systemsReducer(systems:System<any>[]):Reducer {
+//   return state => state
+// }

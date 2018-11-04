@@ -12,10 +12,19 @@ export class Position3DComponent{
 }
 
 export class PIXISpriteComponent extends Component{
-  sprite?: PIXI.Sprite
   spriteName: string
   constructor(config?: { [field in keyof PIXISpriteComponent]: any }) {
     super()
     Object.assign(this, config || {})
   }
+}
+
+export class IDComponent extends Component{
+  static id: number = 0
+  id = IDComponent.id++
+}
+
+//  will destroy entity within selected time
+export class TTLComponent extends Component{
+  time: number = 5000
 }

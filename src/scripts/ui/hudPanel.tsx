@@ -8,8 +8,8 @@ import Buildings from './buildings'	//  tslint:disable-line
 class HudPanel extends React.Component<RootState>{
   render() {
     return <div className='hudPanel'>
-			<Stats />
-			<Buildings />
+			{/* <Stats />
+			<Buildings /> */}
 		</div>
   }
 }

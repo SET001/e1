@@ -1,6 +1,6 @@
 import { Container } from 'inversify'
 
-import { Game } from './core/game'
+import { Game } from './game'
 import * as Systems from './systems'
 import { Creature } from './entities/creatures'
 
