@@ -7,6 +7,8 @@ import { ObjectOf } from '../utils'
 
 // Entity
 
+//  will select components from entity and create component group with keys needed for system
+
 export const createComponentGroup = (system: System<any>, entity: Object):{[k:string]:any} => {
   const { componentsGroup } = system
   return toPairs(componentsGroup).reduce(
@@ -21,7 +23,7 @@ export const createComponentGroup = (system: System<any>, entity: Object):{[k:st
 export class EntityAddAction extends Action{
   public systems: System<any>[] = []
   constructor(public entity: Entity) { super() }
-  action(systems: System<any>[] = []) {
+  action?(systems: System<any>[] = []) {
     const constructors = compose(map(value => value.constructor.name), values)
     this.systems = filter((system) => {
       const { componentsGroup } = system

@@ -1,11 +1,11 @@
 import { Entity, Component, System } from '../../core'
-import { EntityAddAction, EntitySystem } from '../../systems'
+import { EntityAddAction, EntitySystem, createComponentGroup } from '../../systems'
 // import { Game } from '../../game'
 import { assert } from 'chai'
 import { stub, SinonStub } from 'sinon'
 
 class TestEntity extends Entity{
-  test = new TestComponent()
+  blah = new TestComponent()
 }
 
 class FooEntity extends Entity{
@@ -30,7 +30,10 @@ class BlahSystem extends System<any>{}
 describe('Systems', () => {
   describe('EntitySystem', () => {
     describe('createComponentGroup', () => {
-
+      it('should have all keys needed', () => {
+        const compGroup = createComponentGroup(new TestSystem(), new TestEntity)
+        assert.isDefined(compGroup.test)
+      })
     })
     describe('actions', () => {
       describe('EntityAddAction', () => {

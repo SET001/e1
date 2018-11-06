@@ -6,7 +6,7 @@ export class Action{
     this.type = lowerizeFirstLetter(this.constructor.name.split('Action').shift())
   }
 
-  action(): Object {
+  action?(): Object {
     return this
   }
 }
