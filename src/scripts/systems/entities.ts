@@ -1,8 +1,9 @@
-import { compose, reduce, filter, map, values, without, isEmpty, toPairs, find } from 'ramda'
+import { compose, uniq, filter, map, values, without, isEmpty, toPairs, find } from 'ramda'
 import { Action } from '../core/action'
 import { Component } from '../core/component'
 import { System } from '../core/system'
 import { Entity } from '../core/entity'
+import { ObjectOf } from '../utils'
 
 // Entity
 
@@ -16,6 +17,7 @@ export const createComponentGroup = (system: System<any>, entity: Object):{[k:st
       return acc
     }, {})
 }
+
 export class EntityAddAction extends Action{
   public systems: System<any>[] = []
   constructor(public entity: Entity) { super() }
@@ -50,13 +52,18 @@ export class EntityRemoveComponentAction<T extends Component> extends Action {
 export class EntitySystem extends System<Entity[]>{
   stateSliceName = 'entities'
 
-  entityAdd(entities: Entity[] = [], action: EntityAddAction) {
+  entityAdd(entities: Entity[] = [], action: ObjectOf<EntityAddAction>) {
+    const systems = uniq([
+      ...action.entity.systems,
+      ...action.systems,
+    ])
     const entity = {
       ...action.entity,
-      systems: action.systems,
+      systems,
     }
-    action.systems.map((system: System<any>) => {
-      // system.onNewEntity(createComponentGroup(system, entity), entity)
+
+    without(action.entity.systems, systems).map((system: System<any>) => {
+      system.onNewEntity(createComponentGroup(system, entity))
     })
     return [...entities, entity]
   }
