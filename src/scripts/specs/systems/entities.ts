@@ -3,6 +3,7 @@ import { EntityAddAction, EntitySystem, createComponentGroup } from '../../syste
 // import { Game } from '../../game'
 import { assert } from 'chai'
 import { stub, SinonStub } from 'sinon'
+import { GameObject } from '../../entities/gameObject'
 
 class TestEntity extends Entity{
   blah = new TestComponent()
@@ -52,6 +53,22 @@ describe('Systems', () => {
     })
 
     describe('system', () => {
+      describe('entityRemove', () => {
+        it('should remove entity from state', () => {
+          const entitySystem = new EntitySystem()
+          const entities = [
+            new GameObject(),
+            new GameObject(),
+          ]
+          const action = {
+            type: 'entityRemove',
+            entity: entities[0],
+          }
+          const newState = entitySystem.entityRemove(entities, action)
+          assert.equal(newState.length, 1)
+        })
+      })
+
       describe('entityAdd', () => {
         let entitySystem: EntitySystem
         let testSystem: TestSystem
@@ -68,7 +85,7 @@ describe('Systems', () => {
           stub(fooSystem, 'onNewEntity')
           stub(blahSystem, 'onNewEntity')
 
-          const entity = new Entity()
+          const entity = new TestEntity()
           entity.systems.push(blahSystem)
           entity.systems.push(fooSystem)
           const action = {
@@ -82,8 +99,6 @@ describe('Systems', () => {
         it('should add entity to state', () => assert.equal(state.length, 1))
         it('should call onNewEntity for each new system', () => {
           assert.isTrue((testSystem.onNewEntity as SinonStub).called)
-          console.log((testSystem.onNewEntity as SinonStub).args[0])
-
         })
         it('should not call onNewEntity for system where this entity alriedy exist even if it is actions systems array', () => {
           assert.isFalse((blahSystem.onNewEntity as SinonStub).called)

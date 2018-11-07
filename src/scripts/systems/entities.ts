@@ -70,7 +70,7 @@ export class EntitySystem extends System<Entity[]>{
     return [...entities, entity]
   }
 
-  entityRemove(entities: Entity[] = [], action: EntityAddAction) {
+  entityRemove(entities: Entity[] = [], action: EntityRemoveAction) {
     const storeEntity = entities.find((entity:any) => {
       return (entity as any).id.id === (entity as any).id.id
     })
