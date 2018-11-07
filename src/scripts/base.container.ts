@@ -1,8 +1,8 @@
 import { Container } from 'inversify'
 
 import { Game } from './game'
-import * as Systems from './systems'
 import { Creature } from './entities/creatures'
+import { RenderSystem } from './systems/render'
 
 class Action{
   state: boolean = false
@@ -12,6 +12,7 @@ class Action{
 
 const container = new Container()
 container.bind('Creature').to(Creature)
+container.bind('RenderSystem').to(RenderSystem)
 
 // container.bind<any>('Game').to(Game)
 // container.bind<any>('SystemsList').toConstantValue([

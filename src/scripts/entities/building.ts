@@ -1,7 +1,8 @@
 import config from '../config'
 import { Entity } from '../core'
+import { GameObject } from './gameObject'
 
-export class Building extends Entity{
+export class Building extends GameObject{
   // sprite?: any
   // id: number
   // target: any = null

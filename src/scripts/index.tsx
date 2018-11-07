@@ -1,4 +1,5 @@
 import * as React from 'react'
+import 'reflect-metadata'
 import * as ReactDOM from 'react-dom'
 import { App } from './ui/app'
 import { Provider }  from 'react-redux'
@@ -16,19 +17,22 @@ import {
   // CreatureSpawnerSystem,
   // TowerSystem,
   TTLSystem} from './systems'
+import { RenderSystem } from './systems/render'
 import { RootState } from './state'
 import { CreaturesSystem } from './systems/creatures'
 import { CreatureMoveSystem } from './systems/creatureMove'
 import { BuildingsSystem } from './systems/buildings'
 import { BuildingCursor, LaserTower } from './entities'
 import { PIXISpriteComponent, TTLComponent } from './components'
+import { Entity } from './core'
+import { container } from './base.container'
 
 const tickIncomeModifier = 10000
 const game = new Game({ ... new RootState() }, [
   // new BuildingsSystem(),
   // new TickIncomeSystem(tickIncomeModifier),
   // new TickOutcomeSystem(tickIncomeModifier),
-  // new RenderSystem(),
+  new RenderSystem(),
   new TTLSystem(),
   // new TileMapSystem(),
   // new MouseInputSystem(),
@@ -46,15 +50,7 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('appContainer'),
 )
+game.init()
 
-const laserTower = new LaserTower()
-laserTower.position.x = 5
-laserTower.position.y = 5
-// game.addEntity(laserTower)
-laserTower.addComponent(new TTLComponent())
-
-// setTimeout(() => {
-//   console.log('timeout', laserTower)
-//   game.removeEntity(laserTower)
-//   // laserTower.removeComponent(PIXISpriteComponent)
-// }, 3000)
+const tower = game.addEntity(LaserTower)
+tower.addComponent(new TTLComponent())

@@ -18,19 +18,23 @@ export class Game{
   store: Store
   coreSystems: System<any>[] = [new SystemManager(), new EntitySystem()]
   reducer: Reducer
+  systemsToAdd: System<any>[]
 
   constructor(
 		state: any = {},
 	  systems: System<any>[] = [],
 	) {
     const usestate = Object.assign({}, state, defaultState)
-    const systemsToAdd = [...this.coreSystems, ...systems]
-    this.reducer = this.createReducer(systemsToAdd, usestate)
+    this.systemsToAdd = [...this.coreSystems, ...systems]
+    this.reducer = this.createReducer(this.systemsToAdd, usestate)
     this.createStore(this.reducer, usestate)
+  }
+
+  init() {
     map((s: System<any>) => {
       s.init(this.store)
       this.store.dispatch(new AddSystemAction(s))
-    }, systemsToAdd)
+    }, this.systemsToAdd)
   }
 
   createReducer(systems: System<any>[], state: any) {

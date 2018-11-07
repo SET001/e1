@@ -3,7 +3,6 @@ import { PIXISpriteComponent, Position2DComponent, IDComponent } from '../compon
 
 export class Tower extends Building{
   position = new Position2DComponent()
-  id = new IDComponent()
 }
 
 export class LaserTower extends Tower{
