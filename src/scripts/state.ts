@@ -1,6 +1,6 @@
-import { Building, BuildingCursor } from './entities'
+import { Building, BuildingCursor, LaserTower, GunTower, CannonTower } from './entities'
 import { Dispatch } from 'redux'
-import { Entity } from './core'
+import { Entity, System } from './core'
 
 // const lt = new LaserTower().init()
 // const lt2 = new LaserTower()
@@ -24,9 +24,14 @@ import { Entity } from './core'
 export class RootState {
   dispatch?: Dispatch
   buildingCursor?: BuildingCursor = new BuildingCursor()
-  buildingsAvailable?: Building[] = []
-  resources?: {
+  buildingsAvailable?: Building[] = [
+    new GunTower(),
+    new CannonTower(),
+    new LaserTower(),
+  ]
+  resources = {
     gold: 101797,
   }
   entities: Entity[] = []
+  systems: System<any>[] = []
 }

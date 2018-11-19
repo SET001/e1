@@ -22,7 +22,6 @@ export const canHaveTarget = (entity: any): boolean => entity.target !== undefin
 export const isIdling = (entity: any): boolean => entity.state === 'idle'
 export const isHaveTarget = (entity: Targerable) => entity.target
 export const searchTarget = (creatures: Creature[]) => (building: Building): Creature => {
-  console.log('>>>', creatures, building)
   return creatures[0]
 }
 

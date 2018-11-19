@@ -13,7 +13,7 @@ import {
   // TileMapSystem,
   // MouseInputSystem,
   // CursorSystem,
-  // ResourcesSystem,
+  ResourcesSystem,
   // CreatureSpawnerSystem,
   // TowerSystem,
   TTLSystem} from './systems'
@@ -37,7 +37,7 @@ const game = new Game({ ... new RootState() }, [
   // new TileMapSystem(),
   // new MouseInputSystem(),
   // new CursorSystem(),
-  // new ResourcesSystem(),
+  new ResourcesSystem(),
   // new CreatureSpawnerSystem(),
   // new CreaturesSystem(),
   // new CreatureMoveSystem(),
@@ -51,6 +51,17 @@ ReactDOM.render(
   document.getElementById('appContainer'),
 )
 game.init()
+game.run()
+for (let i = 0; i < 1000; i++) {
+  const x = Math.random() * 1000
+  const y = Math.random() * 1000
+  const tower = game.addEntity(LaserTower, {
+    position: { x, y },
+  })
+  // console.log('>>', tower)
+  // game.store.dispatch({
+  //   type: 'updatePosition',
 
-const tower = game.addEntity(LaserTower)
-tower.addComponent(new TTLComponent())
+  //   id: tower.id.id,
+  // })
+}

@@ -6,7 +6,6 @@ export class UpdateResourcesAction extends Action{
 }
 export class ResourcesSystem extends System<any>{
   udpateResources(state: RootState, action:UpdateResourcesAction) {
-    console.log('updating res', action)
     return {
       ...state,
       resources: {

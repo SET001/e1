@@ -21,7 +21,6 @@ export class SuccessBuildingAction extends Action{
       const state = getState()
       const { building } = state.buildingCursor
       const { gold } = state.resources
-      console.log('success building', building, getState())
       return Promise.all([
         // dispatch(new AddRenderObjectAction(
         //   state.buildingCursor.building.sprite, RenderLayersNames.buildings,

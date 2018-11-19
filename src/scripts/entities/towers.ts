@@ -1,5 +1,5 @@
 import { Building } from './building'
-import { PIXISpriteComponent, Position2DComponent, IDComponent } from '../components'
+import { PIXISpriteComponent, Position2DComponent, IDComponent, TTLComponent } from '../components'
 
 export class Tower extends Building{
   position = new Position2DComponent()
@@ -10,13 +10,15 @@ export class LaserTower extends Tower{
   outcome = 5
   baseName = 'Laser Tower'
   render = new PIXISpriteComponent().init({ spriteName: 'chess_tower.png' })
+  ttl = new TTLComponent(Math.random() * 10000 + 10000)
 }
 
 export class CannonTower extends Tower{
-
+  baseName = 'Canon Tower'
 }
 
 export class GunTower extends Tower{
+  baseName = 'Gun Tower'
   render = new PIXISpriteComponent().init({ spriteName: 'chess_tower.png' })
 }
 

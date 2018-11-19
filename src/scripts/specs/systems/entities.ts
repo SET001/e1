@@ -1,5 +1,5 @@
-import { Entity, Component, System } from '../../core'
-import { EntityAddAction, EntitySystem, createComponentGroup } from '../../systems'
+import { Entity, Component, System, PrimitiveComponent } from '../../core'
+import { EntityAddAction, EntitySystem, createComponentGroup, entityAddComponent } from '../../systems'
 // import { Game } from '../../game'
 import { assert } from 'chai'
 import { stub, SinonStub } from 'sinon'
@@ -110,6 +110,55 @@ describe('Systems', () => {
 
         it('should add system to entity', () => {
           assert.equal(state[0].systems.length, 3)
+        })
+      })
+
+      describe.only('entityAddComponent', () => {
+        class IDComponent extends PrimitiveComponent{
+          constructor(public value: any) { super() }
+        }
+        it('should add component to entity', () => {
+          const entity = new Entity()
+          const entities = [entity]
+          const component = new TestComponent()
+          const newEntities = entityAddComponent(entities, {
+            entity,
+            component,
+            systems: [],
+            type: 'entityAddComponent',
+          })
+          assert.equal((newEntities[0] as any).test, component)
+        })
+
+        it('sould add primitive component', () => {
+          const entity = new Entity()
+          const entities = [entity]
+          const component = new IDComponent(123)
+          const newEntities = entityAddComponent(entities, {
+            entity,
+            component,
+            systems: [],
+            type: 'entityAddComponent',
+          })
+          assert.equal((newEntities[0] as any).id, 123)
+        })
+
+        it('should trigger onNewEntity for mutching systems', () => {
+          const entity = new Entity()
+          const entities = [entity]
+          const component = new TestComponent()
+          const system = new TestSystem()
+          stub(system, 'onNewEntity')
+          const action = {
+            entity,
+            component,
+            systems: [system],
+            type: 'entityAddComponent',
+          }
+          const newEntities = entityAddComponent(entities, action)
+          assert.isTrue((system.onNewEntity as SinonStub).called)
+          const args = (system.onNewEntity as SinonStub).args.pop().pop()
+          assert.equal(args.test.test, 'test')
         })
       })
     })

@@ -3,10 +3,9 @@ import { System } from '../core/system'
 import { Store } from 'redux'
 import { RootState } from '../state'
 // import { Building } from '../entities'
-// import { map } from 'ramda'
+import { toPairs, without } from 'ramda'
 // import { Creature } from '../entities/creatures'
 import config from '../config'
-
 import { Action } from '../core/action'
 // import { SuccessBuildingAction, AddBuildingAction } from './buildings'
 import { Position2DComponent, PIXISpriteComponent, IDComponent } from '../components'
@@ -45,13 +44,17 @@ export class RenderSystem extends System<any>{
   app: PIXI.Application
   layers: RenderLayers
   sprites: {[key: number]: PIXI.Sprite} = {}
+  container = new PIXI.particles.ParticleContainer(200000)
   componentsGroup = new ComponentsGroup()
+  pixi: {[keys in keyof typeof PIXI]: any}
 
   init(store: Store) {
     const resolutionX: number = window.innerWidth
     const resolutionY: number = window.innerHeight
     this.app = new PIXI.Application(resolutionX, resolutionY)
     document.getElementById('app').appendChild(this.app.view)
+    this.app.stage.addChild(this.container)
+    // this.pixi.
     // this.app.view.addEventListener('click', (event) => {
     //   // store.dispatch({type: 'canvasClick'})
     //   const { enabled, building } = store.getState().buildingCursor
@@ -62,17 +65,20 @@ export class RenderSystem extends System<any>{
     // })
   }
 
+  controller(store: Store) {}
+
   onNewEntity(entity: ComponentsGroup) {
     const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
-    sprite.position.x = entity.position.x * config.tileSize
-    sprite.position.y = entity.position.y * config.tileSize
+    sprite.position.x = entity.position.x
+    sprite.position.y = entity.position.y
     this.app.stage.addChild(sprite)
     this.sprites[entity.id.id] = sprite
   }
 
   onRemoveEntity(entity: ComponentsGroup) {
-    console.log('render system onRemoveEntity', entity)
     const sprite = this.sprites[entity.id.id]
+    this.sprites = without([sprite], this.sprites)
+    // this.container.removeChild(sprite)
     this.app.stage.removeChild(sprite)
   }
 

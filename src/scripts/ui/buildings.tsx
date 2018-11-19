@@ -13,17 +13,17 @@ class Buildings extends React.Component<RootState>{
 
   render() {
     return <div className='hud' id='buildingsAvailable'>
-			<ul>
-				{this.props.buildingsAvailable.map((building: Building) => {
-				  const disabled = building.cost >= this.props.resources.gold
-  return <BuildingAvailable
-						key = {building.baseName}
-						click = {() => this.onClick(building)}
-						building={building}
-						disabled={disabled}/>
-})}
-			</ul>
-		</div>
+      <ul>
+        {this.props.buildingsAvailable.map((building: Building) => {
+          const disabled = building.cost >= this.props.resources.gold
+          return <BuildingAvailable
+            key = {building.baseName}
+            click = {() => this.onClick(building)}
+            building={building}
+            disabled={disabled}/>
+        })}
+      </ul>
+    </div>
   }
 }
 

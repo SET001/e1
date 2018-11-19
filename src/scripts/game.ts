@@ -38,6 +38,7 @@ export class Game{
   }
 
   createReducer(systems: System<any>[], state: any) {
+    console.log('create reducer')
     const sliceStateSystems = filter(
       (s:System<any>) => typeof s.stateSliceName !== 'undefined',
     )(systems)
@@ -91,9 +92,14 @@ export class Game{
     this.store.replaceReducer(this.createReducer(state.systems, state))
   }
 
-  addEntity(entityClass: { new(): Entity }) {
+  addEntity(entityClass: { new(): Entity }, entityConfig: any = {}) {
     const entity = new entityClass()
+    toPairs(entityConfig).map(([key, value]) => {
+      Object.assign(entity[key], value)
+    })
+    // console.log(entity)
     entity.store = this.store
+    // entity.position.x = 100
     const event = new EntityAddAction(entity).action(this.store.getState().systems)
     this.store.dispatch(event)
     return entity
@@ -113,12 +119,12 @@ export class Game{
   }
 
   gameLoop() {
-  //   map(system => system.controller(this.store), this.systems)
+    map(system => system.controller(this.store), this.store.getState().systems)
   //   // this.store.dispatch({ type: 'tick' })
   //   // const spawn = Math.ceil(Math.random() * 100) === 1
   //   // // this.store.dispatch(spawnCreature() as any);
   //   // this.store.dispatch(moveCreatures())
   //   // this.store.dispatch({ type: 'updateRenderObjects' })
-  //   requestAnimationFrame(this.gameLoop.bind(this))
+    requestAnimationFrame(this.gameLoop.bind(this))
   }
 }
