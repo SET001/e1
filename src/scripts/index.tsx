@@ -50,12 +50,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('appContainer'),
 )
-game.init()
-game.run()
-for (let i = 0; i < 1000; i++) {
-  const x = Math.random() * 1000
-  const y = Math.random() * 1000
-  const tower = game.addEntity(LaserTower, {
-    position: { x, y },
-  })
-}

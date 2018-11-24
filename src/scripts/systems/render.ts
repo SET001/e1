@@ -40,6 +40,7 @@ class ComponentsGroup {
   render = new PIXISpriteComponent()
   id = new IDComponent()
 }
+
 export class RenderSystem extends System<any>{
   app: PIXI.Application
   layers: RenderLayers
