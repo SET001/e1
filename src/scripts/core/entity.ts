@@ -5,27 +5,29 @@ import { Action } from './action'
 
 import { EntityAddComponentAction, EntityRemoveComponentAction } from '../systems'
 import { compose, reduce, filter, map, values, without, isEmpty, toPairs, find } from 'ramda'
+import { IDComponent } from '../components'
 
 //  actions
 
 export class Entity{
+  [key: string]: any
   store: Store
   systems: System<any>[] = []
 
-  addComponent(component: Component) {
-    const systems = this.store.getState().systems
-    const action = new EntityAddComponentAction(this, component).action(systems)
-    this.store.dispatch(action)
-  }
+  // addComponent(component: Component) {
+  //   const systems = this.store.getState().systems
+  //   const action = new EntityAddComponentAction(this, component).action(systems)
+  //   this.store.dispatch(action)
+  // }
 
-  removeComponent(component: {new(): Component}) {
-    this.store.dispatch(new EntityRemoveComponentAction(this, component))
-  }
+  // removeComponent(component: {new(): Component}) {
+  //   this.store.dispatch(new EntityRemoveComponentAction(this, component))
+  // }
 
-  //  add component to this entity
-  add(component: Component) {
-    this.store.dispatch(new EntityAddComponentAction(this, component))
-  }
+  // //  add component to this entity
+  // add(component: Component) {
+  //   this.store.dispatch(new EntityAddComponentAction(this, component))
+  // }
 
   //  remove component from this entity
   remove() {

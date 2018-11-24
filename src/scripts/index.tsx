@@ -58,10 +58,4 @@ for (let i = 0; i < 1000; i++) {
   const tower = game.addEntity(LaserTower, {
     position: { x, y },
   })
-  // console.log('>>', tower)
-  // game.store.dispatch({
-  //   type: 'updatePosition',
-
-  //   id: tower.id.id,
-  // })
 }

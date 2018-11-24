@@ -1,9 +1,11 @@
 import { compose, uniq, filter, map, values, without, isEmpty, toPairs, find } from 'ramda'
 import { Action } from '../core/action'
-import { Component, PrimitiveComponent } from '../core/component'
+import { Component } from '../core/component'
 import { System } from '../core/system'
 import { Entity } from '../core/entity'
 import { ObjectOf } from '../utils'
+import { IDComponent } from '../components'
+import { GameObject } from '../entities'
 
 // Entity
 
@@ -40,16 +42,16 @@ export class EntityAddAction extends Action{
 }
 
 export class EntityRemoveAction extends Action{
-  constructor(public entity: Entity) { super() }
+  constructor(public entity: GameObject) { super() }
 }
 
 export class EntitiesRemoveAction extends Action{
-  constructor(public entities: Entity) { super() }
+  constructor(public entities: {id: IDComponent}[]) { super() }
 }
 
 export class EntityAddComponentAction extends Action{
   public systems: System<any>[] = []
-  constructor(public entity: Entity, public component: Component) { super() }
+  constructor(public entity: GameObject, public component: Component) { super() }
   action?(systems: System<any>[] = []) {
     const constructors = compose(map(value => value.constructor.name), values)
     this.systems = filter((system) => {
@@ -67,22 +69,22 @@ export class EntityAddComponentAction extends Action{
 }
 
 export class EntityRemoveComponentAction<T extends Component> extends Action {
-  constructor(public entity: Entity, public component: { new(): T }) { super() }
+  constructor(public entity: GameObject, public component: { new(): T }) { super() }
 }
 
 export const entityAddComponent = (entities: Entity[] = [], action: EntityAddComponentAction) => {
-  const value = action.component instanceof PrimitiveComponent
-    ? action.component.value
-    : action.component
+  // const value = action.component instanceof NumberComponent || action.component instanceof StringComponent
+  //   ? action.component.value
+  //   : action.component
   const systems = uniq([
     ...action.entity.systems,
     ...action.systems,
   ])
-  return entities.map((entity: Entity) => {
+  return entities.map((entity: GameObject) => {
     if (entity.id === action.entity.id) {
       const newEntity = {
         ...entity,
-        [action.component.name]: value,
+        [action.component.name]: action.component,
       }
       without(action.entity.systems, systems).map((system: System<any>) => {
         const componentGroup = createComponentGroup(system, newEntity)
@@ -115,8 +117,8 @@ export class EntitySystem extends System<Entity[]>{
   }
 
   entityRemove(entities: Entity[] = [], action: EntityRemoveAction) {
-    const storeEntity = entities.find((entity:any) => {
-      return (entity as any).id.id === (entity as any).id.id
+    const storeEntity = entities.find((entity:GameObject) => {
+      return entity.id.valueOf() === action.entity.id.valueOf()
     })
     if (storeEntity) {
       storeEntity.systems.map((system) => {
@@ -127,7 +129,7 @@ export class EntitySystem extends System<Entity[]>{
     return entities
   }
 
-  entitiesRemove(entities: Entity[] = [], action: EntitiesRemoveAction) {
+  entitiesRemove(entities: GameObject[] = [], action: EntitiesRemoveAction) {
     const ids = action.entities.map(entity => entity.id)
 
     const storeEntities = entities.filter(entity => ids.includes(entity.id))
@@ -136,7 +138,7 @@ export class EntitySystem extends System<Entity[]>{
       storeEntities.map(entity => entity.systems.map((system) => {
         system.onRemoveEntity(createComponentGroup(system, entity))
       }))
-      return without(storeEntities, entities)
+      // return without(storeEntities, entities)
     }
     return entities
   }

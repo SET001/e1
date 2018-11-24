@@ -1,6 +1,3 @@
-import { Component } from '../core/component'
+import { NumberComponent } from '../core/component'
 
-export class IDComponent extends Component{
-  static id: number = 0
-  id = IDComponent.id++
-}
+export class IDComponent extends NumberComponent{}

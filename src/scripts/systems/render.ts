@@ -3,7 +3,7 @@ import { System } from '../core/system'
 import { Store } from 'redux'
 import { RootState } from '../state'
 // import { Building } from '../entities'
-import { toPairs, without } from 'ramda'
+import { toPairs, without, omit } from 'ramda'
 // import { Creature } from '../entities/creatures'
 import config from '../config'
 import { Action } from '../core/action'
@@ -71,22 +71,13 @@ export class RenderSystem extends System<any>{
     const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
     sprite.position.x = entity.position.x
     sprite.position.y = entity.position.y
-    this.app.stage.addChild(sprite)
-    this.sprites[entity.id.id] = sprite
+    this.container.addChild(sprite)
+    this.sprites[entity.id.valueOf()] = sprite
   }
 
   onRemoveEntity(entity: ComponentsGroup) {
-    const sprite = this.sprites[entity.id.id]
-    this.sprites = without([sprite], this.sprites)
-    // this.container.removeChild(sprite)
-    this.app.stage.removeChild(sprite)
-  }
-
-  updateRenderObjects(state:RootState) {
-    // this.layers.creatures.children.map((creature, i) => {
-    //   creature.position.x = state.creatures[i].position.x
-    //   creature.position.y = state.creatures[i].position.y
-    // })
-    // return state
+    const sprite = this.sprites[entity.id.valueOf()]
+    this.sprites = omit([entity.id.toString()], this.sprites)
+    this.container.removeChild(sprite)
   }
 }

@@ -38,7 +38,6 @@ export class Game{
   }
 
   createReducer(systems: System<any>[], state: any) {
-    console.log('create reducer')
     const sliceStateSystems = filter(
       (s:System<any>) => typeof s.stateSliceName !== 'undefined',
     )(systems)
