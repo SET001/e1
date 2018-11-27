@@ -73,7 +73,7 @@ export class RenderSystem extends System<any>{
       }
     })
     this.app.view.addEventListener('wheel', (event) => {
-      const scaleChange = event.deltaY / 1000 * -1
+      const scaleChange = event.deltaY / 5000 * -1
       this.container.scale.x += scaleChange
       this.container.scale.y += scaleChange
       // console.log('wheel', event, scaleChange, this.container.scale)
