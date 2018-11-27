@@ -5,7 +5,11 @@ import { ScenarioGame } from './game'
 import { RenderSystem } from '../../systems/render'
 import { LaserTower } from '../../entities'
 import { TTLSystem, IDSystem } from '../../systems'
+import { TTLComponent } from '../../components'
 
+class LaserTowerTTL extends LaserTower{
+  ttl = new TTLComponent(Math.random() * 10000 + 10000)
+}
 class Component extends React.Component<RootState>{
   game: any
   constructor(props: any) {
@@ -23,7 +27,7 @@ class Component extends React.Component<RootState>{
     for (let i = 0; i < 1000; i++) {
       const x = Math.random() * 1000
       const y = Math.random() * 1000
-      this.game.addEntity(LaserTower, {
+      this.game.addEntity(LaserTowerTTL, {
         position: { x, y },
       })
     }

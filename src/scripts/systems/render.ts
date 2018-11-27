@@ -35,6 +35,10 @@ export class RemoveRenderObjectAction extends Action{
 	// 	add new render object
 
   // 	render
+
+export class UpdatePositionAction extends Action{
+  constructor(public objects: ComponentsGroup[]) { super() }
+}
 class ComponentsGroup {
   position = new Position2DComponent()
   render = new PIXISpriteComponent()
@@ -55,6 +59,26 @@ export class RenderSystem extends System<any>{
     this.app = new PIXI.Application(resolutionX, resolutionY)
     document.getElementById('app').appendChild(this.app.view)
     this.app.stage.addChild(this.container)
+    let isMoving = false
+    this.app.view.addEventListener('mouseup', (event) => {
+      isMoving = false
+    })
+    this.app.view.addEventListener('mousedown', (event) => {
+      isMoving = true
+    })
+    this.app.view.addEventListener('mousemove', (event) => {
+      if (isMoving) {
+        this.container.position.x += event.movementX
+        this.container.position.y += event.movementY
+      }
+    })
+    this.app.view.addEventListener('wheel', (event) => {
+      const scaleChange = event.deltaY / 1000 * -1
+      this.container.scale.x += scaleChange
+      this.container.scale.y += scaleChange
+      // console.log('wheel', event, scaleChange, this.container.scale)
+    })
+
     // this.pixi.
     // this.app.view.addEventListener('click', (event) => {
     //   // store.dispatch({type: 'canvasClick'})
@@ -66,7 +90,12 @@ export class RenderSystem extends System<any>{
     // })
   }
 
-  controller(store: Store) {}
+  updatePosition(state: RootState, action: UpdatePositionAction) {
+    action.objects.map((object: ComponentsGroup) => {
+      const sprite = this.sprites[object.id.valueOf()]
+      sprite.position.set(object.position.x, object.position.y)
+    })
+  }
 
   onNewEntity(entity: ComponentsGroup) {
     const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
