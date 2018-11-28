@@ -13,11 +13,35 @@ import { Store } from 'redux'
 class LaserTowerAI extends Component{
   direction = { x: Math.round((Math.random() * -2) + 1), y: Math.round((Math.random() * -2) + 1) }
 }
+class Collidable extends Component{
+  collisions: any[]
+}
 
 class MovableLaserTower extends LaserTower{
   ai = new LaserTowerAI()
+  collidable = new Collidable()
 }
+class CollisionEntity{
+  collidable = new Collidable()
+  id = new IDComponent()
+}
+class CollisionSystem extends System<CollisionEntity>{
+  componentsGroup = new CollisionEntity()
 
+  entities: CollisionEntity[] = []
+  onNewEntity(entity: CollisionEntity) {
+    this.entities.push(entity)
+  }
+
+  controller() {
+    this.entities.map(e => {
+      // const collisions = this.entities.map((ee: CollisionEntity) => {
+      //   if (ee.id.valueOf() === e.id.valueOf()) return false
+      // })
+      // return e
+    })
+  }
+}
 class ComponentGroup{
   id = new IDComponent()
   ai = new LaserTowerAI()
@@ -61,6 +85,7 @@ class Component_ extends React.Component<RootState>{
       new RenderSystem(),
       new TTLSystem(),
       new MovableLaserTowerSystem(),
+      new CollisionSystem(),
     ])
   }
 
