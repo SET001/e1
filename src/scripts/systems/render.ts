@@ -105,6 +105,16 @@ export class RenderSystem extends System<any>{
     this.sprites[entity.id.valueOf()] = sprite
   }
 
+  onNewEntities(entities: ComponentsGroup[]) {
+    entities.map(entity => {
+      const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
+      sprite.position.x = entity.position.x
+      sprite.position.y = entity.position.y
+      this.container.addChild(sprite)
+      this.sprites[entity.id.valueOf()] = sprite
+    })
+  }
+
   onRemoveEntity(entity: ComponentsGroup) {
     const sprite = this.sprites[entity.id.valueOf()]
     this.sprites = omit([entity.id.toString()], this.sprites)

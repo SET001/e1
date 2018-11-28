@@ -56,7 +56,8 @@ class MovableLaserTowerSystem extends System<MovableLaserTower>{
   }
 
   controller(store: Store) {
-    const updates = this.entities.map((entity: ComponentGroup) => {
+    const updates = []
+    this.entities.map((entity: ComponentGroup) => {
       const newEntity = { ...entity }
       newEntity.position.x = entity.position.x + 1 * entity.ai.direction.x
       newEntity.position.y = entity.position.y + 1 * entity.ai.direction.y
@@ -65,7 +66,10 @@ class MovableLaserTowerSystem extends System<MovableLaserTower>{
         newEntity.ai.direction.x = entity.ai.direction.x = Math.round((Math.random() * -2) + 1)
         newEntity.ai.direction.y = entity.ai.direction.y = Math.round((Math.random() * -2) + 1)
       }
-      return newEntity
+      //  udpate only visible entities
+      if (newEntity.position.x < 2000 && newEntity.position.y < 2000 && newEntity.position.y > 0 && newEntity.position.x > 0) {
+        updates.push(newEntity)
+      }
     })
 
     if (updates.length) {
@@ -92,13 +96,16 @@ class Component_ extends React.Component<RootState>{
   componentDidMount() {
     this.game.init()
     this.game.run()
-    for (let i = 0; i < 10000; i++) {
-      const x = Math.random() * 10000
-      const y = Math.random() * 10000
-      this.game.addEntity(MovableLaserTower, {
-        position: { x, y },
-      })
+    const entities = []
+    for (let i = 0; i < 40000; i++) {
+      const x = Math.random() * 32000
+      const y = Math.random() * 32000
+      const entity = new MovableLaserTower()
+      entity.position.x = x
+      entity.position.y = y
+      entities.push(entity)
     }
+    this.game.addEntities(entities)
   }
 
   render() {

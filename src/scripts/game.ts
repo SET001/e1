@@ -7,7 +7,7 @@ import * as reduceReducers from 'reduce-reducers'
 import { Action, Entity, System } from './core'
 import { classNameType, plainObject } from './middlewares'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { EntitySystem, AddSystemAction, SystemManager, EntityAddAction, EntityRemoveAction } from './systems'
+import { EntitySystem, AddSystemAction, SystemManager, EntityAddAction, EntityRemoveAction, EntitiesAddAction } from './systems'
 
 const defaultState = {
   systems: [] as System<any>[],
@@ -102,6 +102,13 @@ export class Game{
     const event = new EntityAddAction(entity).action(this.store.getState().systems)
     this.store.dispatch(event)
     return entity
+  }
+
+  addEntities(entities: Entity[]) {
+    entities.map((entity:Entity) => entity.store = this.store)
+
+    const event = new EntitiesAddAction(entities).action(this.store.getState().systems)
+    this.store.dispatch(event)
   }
 
   // removeEntity(entity: Entity) {

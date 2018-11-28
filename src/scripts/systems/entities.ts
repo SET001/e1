@@ -1,4 +1,4 @@
-import { compose, uniq, filter, map, values, without, isEmpty, toPairs, find } from 'ramda'
+import { compose, uniq, filter, map, values, without, isEmpty, toPairs, find, flatten } from 'ramda'
 import { Action } from '../core/action'
 import { Component } from '../core/component'
 import { System } from '../core/system'
@@ -27,11 +27,32 @@ export class EntityAddAction extends Action{
   constructor(public entity: Entity) { super() }
   action?(systems: System<any>[] = []) {
     const constructors = compose(map(value => value.constructor.name), values)
+    const entityConstructors = constructors(this.entity)
     this.systems = filter((system) => {
       const { componentsGroup } = system
-      const entityConstructors = constructors(this.entity)
       const compGroupConstructors = constructors(componentsGroup)
       return isEmpty(without(entityConstructors, compGroupConstructors))
+    }, systems)
+    const action = {
+      ... this as any,
+      systems: this.systems,
+    }
+    return action
+  }
+}
+
+export class EntitiesAddAction extends Action{
+  public systems: System<any>[] = []
+  constructor(public entities: Entity[]) { super() }
+  action?(systems: System<any>[] = []) {
+    const constructors = compose(map(value => value.constructor.name), values)
+    const entityConstructors = uniq(flatten(this.entities.map(entity => constructors(entity))))
+
+    this.systems = filter((system) => {
+      const { componentsGroup } = system
+      const compGroupConstructors = constructors(componentsGroup)
+      const match = without(entityConstructors, compGroupConstructors)
+      return isEmpty(match)
     }, systems)
     const action = {
       ... this as any,
@@ -114,6 +135,39 @@ export class EntitySystem extends System<Entity[]>{
       system.onNewEntity(createComponentGroup(system, entity))
     })
     return [...entities, entity]
+  }
+
+  entitiesAdd(entities: Entity[] = [], action: ObjectOf<EntitiesAddAction>) {
+    const systemEntities: Map<System<any>, any> = new Map()
+    action.entities.map((e: Entity) => {
+      const systems = uniq([
+        ...e.systems,
+        ...action.systems,
+      ])
+      const entity = {
+        ...e,
+        systems,
+      }
+      without(e.systems, systems).map((system: System<any>) => {
+        let sentities = systemEntities.get(system)
+        if (!sentities) {
+          systemEntities.set(system, [])
+          sentities = systemEntities.get(system)
+        }
+        sentities.push(createComponentGroup(system, entity))
+      })
+    })
+    systemEntities.forEach((compgroups, system) => {
+      if (system.onNewEntities) {
+        system.onNewEntities(compgroups)
+      } else {
+        compgroups.map(compgroup => {
+          system.onNewEntity(compgroup)
+        })
+      }
+    })
+    // system.onNewEntity(createComponentGroup(system, entity))
+    return [...entities, ...action.entities]
   }
 
   entityRemove(entities: Entity[] = [], action: EntityRemoveAction) {
