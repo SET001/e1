@@ -121,7 +121,7 @@ export class RenderSystem extends System<any>{
     const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
     sprite.position.x = entity.position.x
     sprite.position.y = entity.position.y
-    this.container.addChild(sprite)
+    this.entitiesContainer.addChild(sprite)
     this.sprites[entity.id.valueOf()] = sprite
   }
 
