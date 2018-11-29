@@ -105,7 +105,7 @@ class Component_ extends React.Component<RootState>{
     this.game.init()
     this.game.run()
     const entities = []
-    for (let i = 0; i < 20000; i++) {
+    for (let i = 0; i < 10000; i++) {
       const x = Math.random() * 32000
       const y = Math.random() * 32000
       const entity = new MovableLaserTower()
@@ -124,4 +124,4 @@ class Component_ extends React.Component<RootState>{
 function mapStateToProps(state:any) {
   return state
 }
-export const TileMap = connect<RootState>(mapStateToProps)(Component_)
+export const TileMapScenarioComponent = connect<RootState>(mapStateToProps)(Component_) // tslint:disable-line:variable-name

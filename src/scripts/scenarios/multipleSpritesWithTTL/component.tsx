@@ -41,4 +41,4 @@ class Component extends React.Component<RootState>{
 function mapStateToProps(state:any) {
   return state
 }
-export const MultipleSpritesWithTTL = connect<RootState>(mapStateToProps)(Component)
+export const MultipleSpritesWithTTL = connect<RootState>(mapStateToProps)(Component) // tslint:disable-line:variable-name

@@ -124,4 +124,4 @@ class Component_ extends React.Component<RootState>{
 function mapStateToProps(state:any) {
   return state
 }
-export const MapScrolling = connect<RootState>(mapStateToProps)(Component_)
+export const MapScrollingScenarioComponent = connect<RootState>(mapStateToProps)(Component_) // tslint:disable-line:variable-name
