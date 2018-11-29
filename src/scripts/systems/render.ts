@@ -64,8 +64,8 @@ export class RenderSystem extends System<any>{
     const tiles = PIXI.BaseTexture.fromImage(`${config.publicPath}/tiles.png`)
     const tileSize = 32
     const grassTile = new PIXI.Texture(tiles, new PIXI.Rectangle(tileSize * 56, tileSize * 14, tileSize, tileSize))
-    for (let i = 0; i < 1000; i++) {
-      for (let j = 0; j < 1000; j++) {
+    for (let i = 0; i < 100; i++) {
+      for (let j = 0; j < 100; j++) {
         const grass = new PIXI.Sprite(grassTile)
         grass.position.x = i * tileSize
         grass.position.y = j * tileSize
