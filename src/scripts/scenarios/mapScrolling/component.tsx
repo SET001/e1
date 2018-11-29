@@ -68,10 +68,10 @@ class MovableLaserTowerSystem extends System<MovableLaserTower>{
         newEntity.ai.direction.y = entity.ai.direction.y = Math.round((Math.random() * -2) + 1)
       }
       //  udpate only visible entities
-      const maxX = renderSystem.app.view.clientWidth + (renderSystem.container.position.x * -1)
-      const minX = (renderSystem.container.position.x * -1) - 32
-      const minY = (renderSystem.container.position.y * -1) - 32
-      const maxY = renderSystem.app.view.clientHeight + (renderSystem.container.position.y * -1)
+      const maxX = renderSystem.app.view.clientWidth + (renderSystem.rootContainer.position.x * -1)
+      const minX = (renderSystem.rootContainer.position.x * -1) - 32
+      const minY = (renderSystem.rootContainer.position.y * -1) - 32
+      const maxY = renderSystem.app.view.clientHeight + (renderSystem.rootContainer.position.y * -1)
       if (
         newEntity.position.x < maxX &&
         newEntity.position.y < maxY &&

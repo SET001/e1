@@ -49,7 +49,9 @@ export class RenderSystem extends System<any>{
   app: PIXI.Application
   layers: RenderLayers
   sprites: {[key: number]: PIXI.Sprite} = {}
-  container = new PIXI.particles.ParticleContainer(200000)
+  rootContainer = new PIXI.Container()
+  textureContainer = new PIXI.particles.ParticleContainer(200000)
+  entitiesContainer = new PIXI.particles.ParticleContainer(200000)
   componentsGroup = new ComponentsGroup()
   pixi: {[keys in keyof typeof PIXI]: any}
 
@@ -58,7 +60,25 @@ export class RenderSystem extends System<any>{
     const resolutionY: number = window.innerHeight
     this.app = new PIXI.Application(resolutionX, resolutionY)
     document.getElementById('app').appendChild(this.app.view)
-    this.app.stage.addChild(this.container)
+
+    const tiles = PIXI.BaseTexture.fromImage(`${config.publicPath}/tiles.png`)
+    const tileSize = 32
+    const grassTile = new PIXI.Texture(tiles, new PIXI.Rectangle(tileSize * 56, tileSize * 14, tileSize, tileSize))
+    for (let i = 0; i < 1000; i++) {
+      for (let j = 0; j < 1000; j++) {
+        const grass = new PIXI.Sprite(grassTile)
+        grass.position.x = i * tileSize
+        grass.position.y = j * tileSize
+        this.textureContainer.addChild(grass)
+      }
+    }
+    // const tilesTexture = new (tiles, new PIXI.Rectangle(0, 0, 32, 32))
+
+    // const texture = this.app.renderer.generateTexture(this.container)
+    // console.log(texture)
+    this.rootContainer.addChild(this.textureContainer)
+    this.rootContainer.addChild(this.entitiesContainer)
+    this.app.stage.addChild(this.rootContainer)
     let isMoving = false
     this.app.view.addEventListener('mouseup', (event) => {
       isMoving = false
@@ -68,14 +88,14 @@ export class RenderSystem extends System<any>{
     })
     this.app.view.addEventListener('mousemove', (event) => {
       if (isMoving) {
-        this.container.position.x += event.movementX
-        this.container.position.y += event.movementY
+        this.rootContainer.position.x += event.movementX
+        this.rootContainer.position.y += event.movementY
       }
     })
     this.app.view.addEventListener('wheel', (event) => {
       const scaleChange = event.deltaY / 5000 * -1
-      this.container.scale.x += scaleChange
-      this.container.scale.y += scaleChange
+      this.rootContainer.scale.x += scaleChange
+      this.rootContainer.scale.y += scaleChange
       // console.log('wheel', event, scaleChange, this.container.scale)
     })
 
@@ -110,7 +130,7 @@ export class RenderSystem extends System<any>{
       const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
       sprite.position.x = entity.position.x
       sprite.position.y = entity.position.y
-      this.container.addChild(sprite)
+      this.entitiesContainer.addChild(sprite)
       this.sprites[entity.id.valueOf()] = sprite
     })
   }
@@ -118,6 +138,6 @@ export class RenderSystem extends System<any>{
   onRemoveEntity(entity: ComponentsGroup) {
     const sprite = this.sprites[entity.id.valueOf()]
     this.sprites = omit([entity.id.toString()], this.sprites)
-    this.container.removeChild(sprite)
+    this.entitiesContainer.removeChild(sprite)
   }
 }
