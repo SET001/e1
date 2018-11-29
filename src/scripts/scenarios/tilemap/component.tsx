@@ -6,59 +6,34 @@ import { RenderSystem, UpdatePositionAction } from '../../systems/render'
 import { LaserTower } from '../../entities'
 import { TTLSystem, IDSystem } from '../../systems'
 import { System, Component } from '../../core'
-import { Controller } from '../controller'
 import { Position2DComponent, IDComponent } from '../../components'
 import { Store } from 'redux'
 
 class LaserTowerAI extends Component{
   direction = { x: Math.round((Math.random() * -2) + 1), y: Math.round((Math.random() * -2) + 1) }
 }
-class Collidable extends Component{
-  collisions: any[]
-}
 
 class MovableLaserTower extends LaserTower{
   ai = new LaserTowerAI()
-  collidable = new Collidable()
 }
-class CollisionEntity{
-  collidable = new Collidable()
-  id = new IDComponent()
-}
-class CollisionSystem extends System<CollisionEntity>{
-  componentsGroup = new CollisionEntity()
 
-  entities: CollisionEntity[] = []
-  onNewEntity(entity: CollisionEntity) {
-    this.entities.push(entity)
-  }
-
-  controller() {
-    this.entities.map(e => {
-      // const collisions = this.entities.map((ee: CollisionEntity) => {
-      //   if (ee.id.valueOf() === e.id.valueOf()) return false
-      // })
-      // return e
-    })
-  }
-}
-class ComponentGroup{
+class ComponentsGroup{
   id = new IDComponent()
   ai = new LaserTowerAI()
   position = new Position2DComponent()
 }
 
 class MovableLaserTowerSystem extends System<MovableLaserTower>{
-  componentsGroup = new ComponentGroup()
-  entities: ComponentGroup[] = []
-  onNewEntity(entity: ComponentGroup) {
+  componentsGroup = new ComponentsGroup()
+  entities: ComponentsGroup[] = []
+  onNewEntity(entity: ComponentsGroup) {
     this.entities.push(entity)
   }
 
   controller(store: Store) {
-    const updates = []
-    const renderSystem = store.getState().systems.find(system => system instanceof RenderSystem)
-    this.entities.map((entity: ComponentGroup) => {
+    const updates: ComponentsGroup[] = []
+    const renderSystem = store.getState().systems.find((system: System<any>) => system instanceof RenderSystem)
+    this.entities.map((entity: ComponentsGroup) => {
       const newEntity = { ...entity }
       newEntity.position.x = entity.position.x + 1 * entity.ai.direction.x
       newEntity.position.y = entity.position.y + 1 * entity.ai.direction.y
@@ -88,7 +63,7 @@ class MovableLaserTowerSystem extends System<MovableLaserTower>{
   }
 }
 
-class Component_ extends React.Component<RootState>{
+class ScenarioComponent extends React.Component<RootState>{
   game: any
   constructor(props: any) {
     super(props)
@@ -97,7 +72,6 @@ class Component_ extends React.Component<RootState>{
       new RenderSystem(),
       new TTLSystem(),
       new MovableLaserTowerSystem(),
-      new CollisionSystem(),
     ])
   }
 
@@ -124,4 +98,4 @@ class Component_ extends React.Component<RootState>{
 function mapStateToProps(state:any) {
   return state
 }
-export const TileMapScenarioComponent = connect<RootState>(mapStateToProps)(Component_) // tslint:disable-line:variable-name
+export const TileMapScenarioComponent = connect<RootState>(mapStateToProps)(ScenarioComponent) // tslint:disable-line:variable-name

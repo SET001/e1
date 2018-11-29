@@ -46,7 +46,7 @@ export class EntitiesAddAction extends Action{
   constructor(public entities: Entity[]) { super() }
   action?(systems: System<any>[] = []) {
     const constructors = compose(map(value => value.constructor.name), values)
-    const entityConstructors = uniq(flatten(this.entities.map(entity => constructors(entity))))
+    const entityConstructors = uniq(flatten<string>(this.entities.map(entity => constructors(entity))))
 
     this.systems = filter((system) => {
       const { componentsGroup } = system
@@ -161,7 +161,7 @@ export class EntitySystem extends System<Entity[]>{
       if (system.onNewEntities) {
         system.onNewEntities(compgroups)
       } else {
-        compgroups.map(compgroup => {
+        compgroups.map((compgroup: any) => {
           system.onNewEntity(compgroup)
         })
       }

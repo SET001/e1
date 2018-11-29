@@ -37,7 +37,7 @@ export class RemoveRenderObjectAction extends Action{
   // 	render
 
 export class UpdatePositionAction extends Action{
-  constructor(public objects: ComponentsGroup[]) { super() }
+  constructor(public objects: any[]) { super() }
 }
 class ComponentsGroup {
   position = new Position2DComponent()
@@ -126,7 +126,7 @@ export class RenderSystem extends System<any>{
   }
 
   onNewEntities(entities: ComponentsGroup[]) {
-    entities.map(entity => {
+    entities.map((entity: ComponentsGroup) => {
       const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
       sprite.position.x = entity.position.x
       sprite.position.y = entity.position.y
