@@ -8,6 +8,7 @@ import { TTLSystem, IDSystem } from '../../systems'
 import { System, Component } from '../../core'
 import { Position2DComponent, IDComponent } from '../../components'
 import { Store } from 'redux'
+import 'pixi-tilemap'
 
 class LaserTowerAI extends Component{
   direction = { x: Math.round((Math.random() * -2) + 1), y: Math.round((Math.random() * -2) + 1) }
@@ -76,6 +77,7 @@ class ScenarioComponent extends React.Component<RootState>{
   }
 
   componentDidMount() {
+    console.log(PIXI.tilemap)
     this.game.init()
     this.game.run()
     const entities = []
