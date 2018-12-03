@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import 'pixi-tilemap'
 import { System } from '../core/system'
 import { Store } from 'redux'
-import { AddRenderObjectAction, RenderLayersNames } from './render'
+import { RenderLayersNames } from './render'
 
 export class TileMapSystem extends System<any>{
   async init(store: Store) {
@@ -33,6 +33,5 @@ export class TileMapSystem extends System<any>{
 
     const textures = resources.atlas.textures
     tilemap.addFrame(textures['chest.png'], 0 * tileSize, 2 * tileSize)
-    store.dispatch(new AddRenderObjectAction(tilemap, RenderLayersNames.tilemap))
   }
 }

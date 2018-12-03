@@ -3,7 +3,7 @@ import { System } from '../core/system'
 import { RootState } from '../state'
 import { Action } from '../core/action'
 import { Store } from 'redux'
-import { AddRenderObjectAction, RenderLayersNames } from './render'
+import { RenderLayersNames } from './render'
 import { MouseMoveAction } from './mouseInput'
 import { StartBuildingAction } from './buildings'
 
@@ -14,7 +14,6 @@ export class CursorSystem extends System<any>{
     this.sprite.position.set(100, 100)
     this.sprite.visible = false
     this.sprite.alpha = 0.7
-    store.dispatch(new AddRenderObjectAction(this.sprite, RenderLayersNames.cursor))
   }
 
   // mouseMove(state: RootState, action: MouseMoveAction) {

@@ -2,7 +2,6 @@ import { ThunkDispatch } from 'redux-thunk'
 import { System } from '../core/system'
 import { Building } from '../entities'
 import { Action } from '../core/action'
-import { AddRenderObjectAction, RenderLayersNames } from './render'
 import { RootState } from '../state'
 
 type getState = () => RootState
@@ -22,10 +21,6 @@ export class SuccessBuildingAction extends Action{
       const { building } = state.buildingCursor
       const { gold } = state.resources
       return Promise.all([
-        // dispatch(new AddRenderObjectAction(
-        //   state.buildingCursor.building.sprite, RenderLayersNames.buildings,
-        // )),
-        // dispatch(udpateResources(gold - building.cost)),
         dispatch(new AddBuildingAction(building)),
       ]).then(() => dispatch({ ... this as Object }))
     }

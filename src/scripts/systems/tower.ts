@@ -6,7 +6,6 @@ import { Creature } from '../entities/creatures'
 import { Store } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 import { Action } from '../core'
-import { RenderLayersNames, AddRenderObjectAction, RemoveRenderObjectAction } from './render'
 
 // import { Howl, Howler } from 'howler'
 

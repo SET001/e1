@@ -15,10 +15,6 @@ export enum RenderLayersNames{
 }
 type RenderLayers = {[key in RenderLayersNames]: PIXI.Container}
 
-export class AddRenderObjectAction extends Action{
-  constructor(public object: any, public layer: RenderLayersNames) { super() }
-}
-
 export class RemoveRenderObjectAction extends Action{
   constructor(public object: any, public layer: RenderLayersNames) { super() }
 }
