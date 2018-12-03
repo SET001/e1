@@ -2,12 +2,9 @@ import * as PIXI from 'pixi.js'
 import { System } from '../core/system'
 import { Store } from 'redux'
 import { RootState } from '../state'
-// import { Building } from '../entities'
-import { toPairs, without, omit } from 'ramda'
-// import { Creature } from '../entities/creatures'
+import { omit } from 'ramda'
 import config from '../config'
 import { Action } from '../core/action'
-// import { SuccessBuildingAction, AddBuildingAction } from './buildings'
 import { Position2DComponent, PIXISpriteComponent, IDComponent } from '../components'
 
 export enum RenderLayersNames{
@@ -25,19 +22,9 @@ export class AddRenderObjectAction extends Action{
 export class RemoveRenderObjectAction extends Action{
   constructor(public object: any, public layer: RenderLayersNames) { super() }
 }
-// const buyBuildingAction = (building: Building) => (dispatch: Function)  =>
-// 	Promise.all([
-// 		dispatch(udpateResources(building.cost)),
-// 		dispatch(addBuilding(building)),
-// 	]).then(()=>addRenderObject())
-	// 	decrease money
-	// 	add new building
-	// 	add new render object
-
-  // 	render
 
 export class UpdatePositionAction extends Action{
-  constructor(public objects: ComponentsGroup[]) { super() }
+  constructor(public objects: any[]) { super() }
 }
 class ComponentsGroup {
   position = new Position2DComponent()
@@ -61,21 +48,6 @@ export class RenderSystem extends System<any>{
     this.app = new PIXI.Application(resolutionX, resolutionY)
     document.getElementById('app').appendChild(this.app.view)
 
-    const tiles = PIXI.BaseTexture.fromImage(`${config.publicPath}/tiles.png`)
-    const tileSize = 32
-    const grassTile = new PIXI.Texture(tiles, new PIXI.Rectangle(tileSize * 56, tileSize * 14, tileSize, tileSize))
-    for (let i = 0; i < 1000; i++) {
-      for (let j = 0; j < 1000; j++) {
-        const grass = new PIXI.Sprite(grassTile)
-        grass.position.x = i * tileSize
-        grass.position.y = j * tileSize
-        this.textureContainer.addChild(grass)
-      }
-    }
-    // const tilesTexture = new (tiles, new PIXI.Rectangle(0, 0, 32, 32))
-
-    // const texture = this.app.renderer.generateTexture(this.container)
-    // console.log(texture)
     this.rootContainer.addChild(this.textureContainer)
     this.rootContainer.addChild(this.entitiesContainer)
     this.app.stage.addChild(this.rootContainer)
@@ -96,18 +68,8 @@ export class RenderSystem extends System<any>{
       const scaleChange = event.deltaY / 5000 * -1
       this.rootContainer.scale.x += scaleChange
       this.rootContainer.scale.y += scaleChange
-      // console.log('wheel', event, scaleChange, this.container.scale)
     })
 
-    // this.pixi.
-    // this.app.view.addEventListener('click', (event) => {
-    //   // store.dispatch({type: 'canvasClick'})
-    //   const { enabled, building } = store.getState().buildingCursor
-    //   if (enabled) {
-    //     // store.dispatch(new AddBuildingAction(building)),
-    //     store.dispatch(new SuccessBuildingAction(building).action() as any)
-    //   }
-    // })
   }
 
   updatePosition(state: RootState, action: UpdatePositionAction) {
@@ -126,7 +88,7 @@ export class RenderSystem extends System<any>{
   }
 
   onNewEntities(entities: ComponentsGroup[]) {
-    entities.map(entity => {
+    entities.map((entity: ComponentsGroup) => {
       const sprite = PIXI.Sprite.fromImage(`${config.publicPath}/${entity.render.spriteName}`)
       sprite.position.x = entity.position.x
       sprite.position.y = entity.position.y

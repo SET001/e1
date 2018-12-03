@@ -3,8 +3,9 @@ import HudPanel from './hudPanel'	//  tslint:disable-line
 import { Game } from '../game'
 import { HashRouter as Router, Route, Link } from 'react-router-dom'
 import { MultipleSpritesWithTTL } from '../scenarios/multipleSpritesWithTTL'
-import { Controller } from '../scenarios/controller'
-import { MapScrolling } from '../scenarios/mapScrolling'
+import { ControllerScenarioComponent } from '../scenarios/controller'
+import { MapScrollingScenarioComponent } from '../scenarios/mapScrolling'
+import { TileMapScenarioComponent } from '../scenarios/tilemap'
 
 export class App extends React.Component<{game: Game}>{
   render() {
@@ -12,7 +13,7 @@ export class App extends React.Component<{game: Game}>{
       <div>
         <ul id='scenariosMenu'>
           <li>
-            <Link to='/'>Home</Link>
+            <Link to='/'>Hodadsme</Link>
           </li>
           <li>
             <Link to='/multipleSpritesWithTTL'>multipleSpritesWithTTL</Link>
@@ -23,12 +24,16 @@ export class App extends React.Component<{game: Game}>{
           <li>
             <Link to='/mapScrolling'>Map Scrolling</Link>
           </li>
+          <li>
+            <Link to='/tilemap'>Tilemap</Link>
+          </li>
         </ul>
 
         <Route exact path='/' component={MultipleSpritesWithTTL} />
         <Route path='/multipleSpritesWithTTL' component={MultipleSpritesWithTTL} />
-        <Route path='/controller' component={Controller} />
-        <Route path='/mapScrolling' component={MapScrolling} />
+        <Route path='/controller' component={ControllerScenarioComponent} />
+        <Route path='/mapScrolling' component={MapScrollingScenarioComponent} />
+        <Route path='/tilemap' component={TileMapScenarioComponent} />
       </div>
     </Router>
   }

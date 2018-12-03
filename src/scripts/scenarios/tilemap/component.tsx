@@ -5,20 +5,17 @@ import { ScenarioGame } from './game'
 import { RenderSystem, UpdatePositionAction } from '../../systems/render'
 import { LaserTower } from '../../entities'
 import { TTLSystem, IDSystem } from '../../systems'
-import { System, Component, Entity } from '../../core'
+import { System, Component } from '../../core'
 import { Position2DComponent, IDComponent } from '../../components'
 import { Store } from 'redux'
+import 'pixi-tilemap'
 
 class LaserTowerAI extends Component{
   direction = { x: Math.round((Math.random() * -2) + 1), y: Math.round((Math.random() * -2) + 1) }
 }
-class Collidable extends Component{
-  collisions: any[]
-}
 
 class MovableLaserTower extends LaserTower{
   ai = new LaserTowerAI()
-  collidable = new Collidable()
 }
 
 class ComponentsGroup{
@@ -80,10 +77,11 @@ class ScenarioComponent extends React.Component<RootState>{
   }
 
   componentDidMount() {
+    console.log(PIXI.tilemap)
     this.game.init()
     this.game.run()
     const entities = []
-    for (let i = 0; i < 20000; i++) {
+    for (let i = 0; i < 10000; i++) {
       const x = Math.random() * 32000
       const y = Math.random() * 32000
       const entity = new MovableLaserTower()
@@ -95,11 +93,11 @@ class ScenarioComponent extends React.Component<RootState>{
   }
 
   render() {
-    return <div id='app'></div>
+    return <div id= 'app' > </div>
   }
 }
 
 function mapStateToProps(state:any) {
   return state
 }
-export const MapScrollingScenarioComponent = connect<RootState>(mapStateToProps)(ScenarioComponent) // tslint:disable-line:variable-name
+export const TileMapScenarioComponent = connect<RootState>(mapStateToProps)(ScenarioComponent) // tslint:disable-line:variable-name
