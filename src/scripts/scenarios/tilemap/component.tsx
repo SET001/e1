@@ -1,5 +1,3 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
 import { RootState } from './state'
 import { ScenarioGame } from './game'
 import { RenderSystem, UpdatePositionAction } from '../../systems/render'
@@ -9,6 +7,7 @@ import { System, Component } from '../../core'
 import { Position2DComponent, IDComponent } from '../../components'
 import { Store } from 'redux'
 import 'pixi-tilemap'
+import { ScenarioComponent } from '../../ui/scenario'
 
 class LaserTowerAI extends Component{
   direction = { x: Math.round((Math.random() * -2) + 1), y: Math.round((Math.random() * -2) + 1) }
@@ -64,8 +63,7 @@ class MovableLaserTowerSystem extends System<MovableLaserTower>{
   }
 }
 
-class ScenarioComponent extends React.Component<RootState>{
-  game: any
+export class TileMapScenarioComponent extends ScenarioComponent<RootState>{
   constructor(props: any) {
     super(props)
     this.game = new ScenarioGame({ ... new RootState() }, [
@@ -91,13 +89,8 @@ class ScenarioComponent extends React.Component<RootState>{
     }
     this.game.addEntities(entities)
   }
-
-  render() {
-    return <div id= 'app' > </div>
-  }
 }
 
 function mapStateToProps(state:any) {
   return state
 }
-export const TileMapScenarioComponent = connect<RootState>(mapStateToProps)(ScenarioComponent) // tslint:disable-line:variable-name

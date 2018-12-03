@@ -1,17 +1,15 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
 import { RootState } from './state'
 import { ScenarioGame } from './game'
 import { RenderSystem } from '../../systems/render'
 import { LaserTower } from '../../entities'
 import { TTLSystem, IDSystem } from '../../systems'
 import { TTLComponent } from '../../components'
+import { ScenarioComponent } from '../../ui/scenario'
 
 class LaserTowerTTL extends LaserTower{
   ttl = new TTLComponent(Math.random() * 10000 + 10000)
 }
-class Component extends React.Component<RootState>{
-  game: any
+export class MultipleSpritesWithTTL extends ScenarioComponent<RootState>{
   constructor(props: any) {
     super(props)
     this.game = new ScenarioGame({ ... new RootState() }, [
@@ -32,13 +30,4 @@ class Component extends React.Component<RootState>{
       })
     }
   }
-
-  render() {
-    return <div id='app'></div>
-  }
 }
-
-function mapStateToProps(state:any) {
-  return state
-}
-export const MultipleSpritesWithTTL = connect<RootState>(mapStateToProps)(Component) // tslint:disable-line:variable-name
